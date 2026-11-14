@@ -1,8 +1,7 @@
 using System.ComponentModel.DataAnnotations;
-using System.Net;
-using System.Net.Mail;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using WebAppColax.Services;
 
 namespace WebAppColax.Pages;
 
@@ -14,13 +13,11 @@ public class ContattiModel : PageModel
         "Barche usate", "Servizi a terra", "Altro"
     };
 
-    private readonly IConfiguration _config;
-    private readonly ILogger<ContattiModel> _log;
+    private readonly EmailSender _emailSender;
 
-    public ContattiModel(IConfiguration config, ILogger<ContattiModel> log)
+    public ContattiModel(EmailSender emailSender)
     {
-        _config = config;
-        _log = log;
+        _emailSender = emailSender;
     }
 
     [BindProperty] public InputModel Input { get; set; } = new();
@@ -72,44 +69,23 @@ public class ContattiModel : PageModel
 
         if (!ModelState.IsValid) return Page();
 
-        var host = _config["Contatti:SmtpHost"];
-        var from = _config["Contatti:From"];
-        var to = _config["Contatti:To"];
-        if (string.IsNullOrWhiteSpace(host) || string.IsNullOrWhiteSpace(from) || string.IsNullOrWhiteSpace(to))
+        var nome = Pulisci(Input.Nome);
+        var body = $"Nome: {nome}\nEmail: {Input.Email}\nTelefono: {Pulisci(Input.Telefono ?? "-")}\nArgomento: {Input.Argomento}\n\n{Input.Messaggio.Trim()}";
+        var result = await _emailSender.SendAsync(
+            $"[Sito] {Input.Argomento} – {nome}",
+            body,
+            Input.Email,
+            nome,
+            HttpContext.RequestAborted);
+
+        if (result == EmailSendResult.Sent)
         {
-            _log.LogWarning("Modulo contatti: SMTP non configurato (sezione 'Contatti' in appsettings).");
-            Esito = "errore";
-            return Page();
-        }
-
-        try
-        {
-            var nome = Pulisci(Input.Nome);
-            using var msg = new MailMessage(new MailAddress(from, "Sito Armatori Salentini"), new MailAddress(to))
-            {
-                Subject = $"[Sito] {Input.Argomento} – {nome}",
-                Body = $"Nome: {nome}\nEmail: {Input.Email}\nTelefono: {Pulisci(Input.Telefono ?? "-")}\nArgomento: {Input.Argomento}\n\n{Input.Messaggio}"
-            };
-            msg.ReplyToList.Add(new MailAddress(Input.Email, nome));
-
-            using var client = new SmtpClient(host, int.TryParse(_config["Contatti:SmtpPort"], out var port) ? port : 587)
-            {
-                EnableSsl = !string.Equals(_config["Contatti:EnableSsl"], "false", StringComparison.OrdinalIgnoreCase)
-            };
-            var user = _config["Contatti:SmtpUser"];
-            if (!string.IsNullOrWhiteSpace(user))
-                client.Credentials = new NetworkCredential(user, _config["Contatti:SmtpPassword"]);
-
-            await client.SendMailAsync(msg);
             Esito = "ok";
             return RedirectToPage();
         }
-        catch (Exception ex)
-        {
-            _log.LogError(ex, "Modulo contatti: invio email non riuscito.");
-            Esito = "errore";
-            return Page();
-        }
+
+        Esito = result == EmailSendResult.NotConfigured ? "configurazione" : "errore";
+        return Page();
     }
 
     // Evita a capo nei campi usati nelle intestazioni dell'email

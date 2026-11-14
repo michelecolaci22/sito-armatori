@@ -58,6 +58,7 @@
                 var foto = b.Foto.FirstOrDefault() ?? "~/img/barche/nessuna.jpg";
                 var motori = b.Scheda.TryGetValue("Motori", out var mVal) ? mVal : "";
                 var cabine = b.Scheda.TryGetValue("Cabine", out var cVal) ? cVal : "";
+                var messaggioWa = Uri.EscapeDataString($"Buongiorno, vorrei informazioni sulla barca {b.Nome} in vendita.");
 
                 // Estrazione numerica prezzo per filtro JS
                 var prezzoVal = "0";
@@ -69,7 +70,7 @@
                 <article class="bcard card-barca" data-nome="@b.Nome.ToLowerInvariant()" data-anno="@b.Anno" data-prezzo-cat="@prezzoVal">
                     <a asp-page="/BarcheUsate/Dettaglio" asp-route-slug="@b.Slug" tabindex="-1" aria-hidden="true" style="text-decoration:none;">
                         <div class="bimg" style="background-image:url('@Url.Content(foto)'),linear-gradient(160deg,#1a6f86,#0b2f3b); position:relative;">
-                            <span style="position:absolute; top:0.75rem; right:0.75rem; background:rgba(8,35,46,0.85); color:#fff; font-size:0.8rem; font-weight:600; padding:0.25rem 0.6rem; border-radius:0.4rem; backdrop-filter:blur(4px);">
+                            <span class="boat-year">
                                 @b.Anno
                             </span>
                         </div>
@@ -85,7 +86,7 @@
                             @if (!string.IsNullOrWhiteSpace(motori))
                             {
                                 <span style="display:block; font-size:0.85rem; color:var(--muted); margin-top:0.2rem; text-overflow:ellipsis; overflow:hidden; white-space:nowrap;" title="@motori">
-                                    ⚓ @motori
+                                    @motori
                                 </span>
                             }
                         </p>
@@ -95,9 +96,9 @@
                             <a class="btn sea" asp-page="/BarcheUsate/Dettaglio" asp-route-slug="@b.Slug" style="flex:1; text-align:center; padding:0.6rem 0.8rem; font-size:0.95rem;">
                                 Scheda tecnica <span aria-hidden="true">→</span>
                             </a>
-                            <a class="btn wa" href="https://wa.me/393287451542?text=Buongiorno%2C%20vorrei%20informazioni%20sulla%20barca%20@Uri.EscapeDataString(b.Nome)%20in%20vendita." 
+                            <a class="btn wa" href="https://wa.me/393287451542?text=@messaggioWa"
                                target="_blank" rel="noopener" style="padding:0.6rem 0.8rem; font-size:0.95rem;" title="Chiedi su WhatsApp">
-                                💬
+                                WhatsApp
                             </a>
                         </div>
                     </div>
@@ -111,25 +112,25 @@
     }
 
     <!-- Sezione Vendita / Brokerage -->
-    <section class="pbox" style="margin-top: 3rem; background:linear-gradient(170deg, #0b5c73 0%, #08232e 100%); color:#fff; border:0;">
-        <div style="display:grid; grid-template-columns: 1.2fr 0.8fr; gap:2rem; align-items:center;">
+    <section class="pbox seller-cta">
+        <div class="seller-cta-grid">
             <div>
-                <h2 style="color:#fff; margin-bottom:0.6rem; font-size:clamp(1.6rem,3.5vw,2.2rem);">Vuoi vendere la tua imbarcazione?</h2>
-                <p style="color:#dcecf0; margin-bottom:1.5rem; font-size:1.05rem;">
+                <h2>Vuoi vendere la tua imbarcazione?</h2>
+                <p class="seller-cta-text">
                     Affidati alla nostra rete di contatti in Salento e in tutto il Mediterraneo. Valutazione professionale, servizio fotografico dedicato, visibilità sul nostro portale e gestione delle visite a Leuca.
                 </p>
                 <div class="btns">
-                    <a class="btn" asp-page="/Contatti" style="color:#1c1204;">Affidaci la vendita</a>
-                    <a class="btn ghost" href="tel:+393287451542" style="border-color:rgba(255,255,255,0.4);">Parla con il nostro broker</a>
+                    <a class="btn" asp-page="/Contatti">Affidaci la vendita</a>
+                    <a class="btn ghost" href="tel:+393287451542">Parla con il nostro broker</a>
                 </div>
             </div>
-            <div style="background:rgba(255,255,255,0.08); padding:1.5rem; border-radius:1rem; border:1px solid rgba(255,255,255,0.15);">
-                <h3 style="font-size:1.2rem; color:var(--sun); margin-bottom:0.75rem;">I vantaggi con Armatori Salentini</h3>
-                <ul class="chk" style="display:flex; flex-direction:column; gap:0.5rem; margin:0; font-size:0.95rem;">
-                    <li style="color:#f4f8f8;">Perizia tecnica preventiva dello stato d'uso</li>
-                    <li style="color:#f4f8f8;">Posto barca transitorio per facilitare le visite</li>
-                    <li style="color:#f4f8f8;">Assistenza contrattuale e passaggio di proprietà</li>
-                    <li style="color:#f4f8f8;">Gestione completa delle prove in mare</li>
+            <div class="seller-benefits">
+                <h3>I vantaggi con Armatori Salentini</h3>
+                <ul class="chk">
+                    <li>Perizia tecnica preventiva dello stato d'uso</li>
+                    <li>Posto barca transitorio per facilitare le visite</li>
+                    <li>Assistenza contrattuale e passaggio di proprietà</li>
+                    <li>Gestione completa delle prove in mare</li>
                 </ul>
             </div>
         </div>

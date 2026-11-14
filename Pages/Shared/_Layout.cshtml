@@ -3,12 +3,13 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/svg+xml" href="~/img/mark.svg" />
+    <meta name="theme-color" content="#f7f5ef" />
+    <link rel="icon" type="image/png" href="~/img/logo.png" />
     <title>@ViewData["Title"] – Armatori Salentini</title>
     <meta name="description" content="@(ViewData["Description"] ?? "Escursioni in barca da Santa Maria di Leuca: grotte, Grecia, charter e barche usate.")" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="it_IT" />
@@ -27,18 +28,23 @@
     </script>
 </head>
 <body class="@(ViewData["Cover"] != null ? "has-cover" : "")">
-    <a class="skip" href="#main">Vai al contenuto</a>
+    <a class="skip-link" href="#main">Vai al contenuto</a>
     <header class="site-header">
-        <a class="logo" asp-page="/Index" aria-label="Armatori Salentini – Home"><img src="~/img/logo-compact.svg" alt="Armatori Salentini – Boat and Yacht Services" width="186" height="44" /></a>
-        <input type="checkbox" id="nav-toggle" class="nav-toggle" />
-        <label for="nav-toggle" class="burger">Menu</label>
-        <nav aria-label="Principale">
-            <a asp-page="/Tour/Grecia">Tour Grecia</a>
-            <a asp-page="/Tour/Charter">Charter Yacht</a>
-            <a asp-page="/BarcheUsate/Index">Barche usate</a>
-            <a asp-page="/Prenota" style="color:var(--sea); font-weight:700;">Prenota</a>
-            <a asp-page="/Contatti">Contatti</a>
-        </nav>
+        <div class="wrap header-inner">
+            <a class="brand" asp-page="/Index" aria-label="Armatori Salentini, pagina iniziale">
+                <img src="~/img/logo.png" alt="Armatori Salentini – Boat and Yacht Services" width="186" height="44" />
+            </a>
+            <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Apri il menu di navigazione" />
+            <label for="nav-toggle" class="nav-trigger"><span></span><span></span><span class="sr-only">Menu</span></label>
+            <nav class="main-nav" aria-label="Navigazione principale">
+                <a asp-page="/Index" asp-fragment="esperienze">Esperienze</a>
+                <a asp-page="/Tour/Grecia">Tour Grecia</a>
+                <a asp-page="/Tour/Charter">Charter</a>
+                <a asp-page="/BarcheUsate/Index">Barche in vendita</a>
+                <a asp-page="/Contatti">Contatti</a>
+                <a asp-page="/Prenota" class="nav-cta">Prenota <span aria-hidden="true">↗</span></a>
+            </nav>
+        </div>
     </header>
 
     <main id="main">
@@ -46,32 +52,47 @@
     </main>
 
     <footer class="site-footer" id="contatti">
-        <div class="wrap">
-            <div>
-                <div style="background:rgba(255,255,255,0.95); display:inline-block; padding:0.4rem 0.8rem; border-radius:0.5rem; margin-bottom:0.9rem;">
-                    <img src="~/img/logo-compact.svg" alt="Armatori Salentini – Boat and Yacht Services" width="186" height="44" style="display:block;" />
-                </div><br />
-                Santa Maria di Leuca (LE)<br />
-                P.IVA 05069050754<br />
-                © @DateTime.Now.Year Armatori Salentini
+        <div class="wrap footer-main">
+            <div class="footer-brand-block">
+                <a class="footer-brand" asp-page="/Index"><img src="~/img/logo.png" alt="Armatori Salentini" width="186" height="44" /></a>
+                <p>Il mare di Leuca, vissuto da vicino.</p>
+                <span>Santa Maria di Leuca · Puglia</span>
             </div>
-            <div>
-                Telefono: <a href="tel:+393287451542">+39 328 745 1542</a><br />
-                Email: <a href="mailto:info@@armatorisalentini.it">info@@armatorisalentini.it</a>
+            <div class="footer-column">
+                <p class="footer-title">ESPERIENZE</p>
+                <a asp-page="/Tour/Charter">Charter privato</a>
+                <a asp-page="/Tour/Grecia">Tour in Grecia</a>
+                <a asp-page="/Prenota" asp-route-tour="grotte">Grotte di Leuca</a>
+                <a asp-page="/BarcheUsate/Index">Barche in vendita</a>
             </div>
-            <div>
-                <a asp-page="/Privacy">Privacy policy</a><br />
-                <a asp-page="/Termini">Termini e condizioni</a>
+            <div class="footer-column">
+                <p class="footer-title">PARLIAMONE</p>
+                <a href="tel:+393287451542">+39 328 745 1542</a>
+                <a href="mailto:info@@armatorisalentini.it">info@@armatorisalentini.it</a>
+                <a href="https://www.instagram.com/armatorisalentini/" target="_blank" rel="noopener">Instagram ↗</a>
             </div>
+            <div class="footer-column footer-address">
+                <p class="footer-title">CI TROVI QUI</p>
+                <span>Porto turistico<br />Santa Maria di Leuca (LE)</span>
+                <a href="https://www.google.com/maps/place/Armatori+Salentini/@@39.8010209,18.3576818,15z" target="_blank" rel="noopener">Apri la mappa ↗</a>
+            </div>
+        </div>
+        <div class="wrap footer-bottom">
+            <span>© @DateTime.Now.Year Armatori Salentini · P.IVA 05069050754</span>
+            <div><a asp-page="/Privacy">Privacy</a><a asp-page="/Termini">Termini e condizioni</a></div>
         </div>
     </footer>
     @await RenderSectionAsync("Scripts", required: false)
     <script>
     (function () {
-        var h = document.querySelector(".site-header");
-        function f() { h.classList.toggle("scrolled", window.scrollY > 40); }
-        f();
-        addEventListener("scroll", f, { passive: true });
+        var header = document.querySelector(".site-header");
+        var menu = document.getElementById("nav-toggle");
+        function updateHeader() { header.classList.toggle("is-scrolled", window.scrollY > 24); }
+        updateHeader();
+        window.addEventListener("scroll", updateHeader, { passive: true });
+        document.querySelectorAll(".main-nav a").forEach(function (link) {
+            link.addEventListener("click", function () { if (menu) menu.checked = false; });
+        });
     })();
     </script>
 </body>

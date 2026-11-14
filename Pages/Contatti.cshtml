@@ -39,6 +39,10 @@
             {
                 <p class="note ok" role="status">Grazie! Abbiamo ricevuto il tuo messaggio e ti risponderemo il prima possibile.</p>
             }
+            else if (Model.Esito == "configurazione")
+            {
+                <p class="note err" role="alert">Il modulo non è ancora disponibile. Chiamaci al @telefono oppure scrivici a <a href="mailto:@email">@email</a>.</p>
+            }
             else if (Model.Esito == "errore")
             {
                 <p class="note err" role="alert">Non siamo riusciti a inviare il messaggio. Chiamaci al @telefono oppure scrivici a @email.</p>

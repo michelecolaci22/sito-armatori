@@ -2,7 +2,7 @@
 @model WebAppColax.Pages.PrenotaModel
 @{
     ViewData["Title"] = "Prenotazione Tour e Charter Yacht a Santa Maria di Leuca";
-    ViewData["Description"] = "Prenota online la tua esperienza in mare a Santa Maria di Leuca: tour in Grecia, charter yacht esclusivo con scelta dell'imbarcazione o tour delle grotte. Orari 10-14, 14:30-18:30 e 10-18.";
+    ViewData["Description"] = "Invia una richiesta per tour in Grecia, charter yacht o tour delle grotte a Santa Maria di Leuca. Ti ricontatteremo per verificare la disponibilità.";
     
     var minDate = DateTime.Today.ToString("yyyy-MM-dd");
     var maxDate = DateTime.Today.AddMonths(12).ToString("yyyy-MM-dd");
@@ -14,20 +14,20 @@
             <a asp-page="/Index">Home</a> › Prenotazioni
         </nav>
         <h1>Prenota la tua Esperienza in Mare</h1>
-        <p class="lead">Scegli tra la minicrociera in Grecia, il noleggio esclusivo di uno dei nostri yacht o il tour delle grotte. Seleziona la data e la fascia oraria sul calendario per verificare la disponibilità in tempo reale.</p>
+        <p class="lead">Scegli l'esperienza, indica la data che preferisci e inviaci la richiesta. La disponibilità viene verificata dal nostro staff e la prenotazione sarà confermata solo dopo un nostro riscontro.</p>
     </section>
 
     <!-- Banner Pagine Dedicate -->
     <div class="dedicated-pages-banner">
         <a asp-page="/Tour/Grecia" class="dp-link">
-            <span class="dp-icon">🇬🇷</span>
+            <span class="dp-icon" aria-hidden="true">01</span>
             <div>
                 <strong>Pagina dedicata Tour in Grecia</strong>
                 <span>Itinerario, tappe, foto e programma completo →</span>
             </div>
         </a>
         <a asp-page="/Tour/Charter" class="dp-link">
-            <span class="dp-icon">🛥️</span>
+            <span class="dp-icon" aria-hidden="true">02</span>
             <div>
                 <strong>Pagina dedicata Charter Flotta Yacht</strong>
                 <span>Confronta tutti i modelli, specifiche e dotazioni →</span>
@@ -38,8 +38,14 @@
     @if (Model.Esito == "ok")
     {
         <div class="note ok" role="status" style="margin-bottom:2rem; font-size:1.05rem;">
-            <strong>Richiesta inviata con successo!</strong><br />
-            Grazie per averci contattato. Ti abbiamo inviato una conferma riassuntiva a <strong>@Model.EmailInviata</strong> e il nostro comandante ti risponderà al più presto su WhatsApp o via email per bloccare l'imbarcazione.
+            <strong>Richiesta ricevuta!</strong><br />
+            Ti ricontatteremo all'indirizzo <strong>@Model.EmailInviata</strong> per verificare la disponibilità e concordare i dettagli. Questa richiesta non conferma ancora la prenotazione.
+        </div>
+    }
+    else if (Model.Esito == "configurazione")
+    {
+        <div class="note err" role="alert" style="margin-bottom:2rem;">
+            Il modulo non è ancora disponibile. Per inviare la richiesta, chiamaci al <a href="tel:+393287451542">+39 328 745 1542</a> oppure scrivici a <a href="mailto:info@armatorisalentini.it">info@armatorisalentini.it</a>.
         </div>
     }
     else if (Model.Esito == "errore")
@@ -56,7 +62,6 @@
         <input type="hidden" asp-for="Input.TipoEsperienza" id="hidden-tipo-esperienza" />
         <input type="hidden" asp-for="Input.YachtSelezionato" id="hidden-yacht" />
         <input type="hidden" asp-for="Input.FasciaOraria" id="hidden-fascia-oraria" />
-        <input type="hidden" asp-for="Input.Data" id="hidden-data-input" />
 
         <div class="booking-layout">
             <!-- Colonna Sinistra: Configurazione Interattiva -->
@@ -73,7 +78,7 @@
                         <!-- Charter -->
                         <div class="exp-card @(Model.Input.TipoEsperienza == "charter" ? "active" : "")" data-tipo="charter">
                             <span class="exp-badge">Più Richiesto</span>
-                            <div class="exp-icon">🛥️</div>
+                            <div class="exp-icon" aria-hidden="true">01</div>
                             <h3>Charter Yacht Esclusivo</h3>
                             <p>Yacht privato con skipper solo per te e i tuoi ospiti. Rotta personalizzata e aperitivo a bordo.</p>
                             <span class="exp-price">Da € 500 a gruppo</span>
@@ -81,8 +86,8 @@
 
                         <!-- Grecia -->
                         <div class="exp-card @(Model.Input.TipoEsperienza == "grecia" ? "active" : "")" data-tipo="grecia">
-                            <span class="exp-badge" style="background:#0b5c73;">Internazionale</span>
-                            <div class="exp-icon">🇬🇷</div>
+                            <span class="exp-badge">Internazionale</span>
+                            <div class="exp-icon" aria-hidden="true">02</div>
                             <h3>Tour in Grecia (Diapontie)</h3>
                             <p>Giornata intera tra Fanò (Othonoi) e Mathraki. Baia di Calypso e pranzo nelle taverne greche.</p>
                             <span class="exp-price">€ 180 a persona</span>
@@ -90,7 +95,7 @@
 
                         <!-- Grotte -->
                         <div class="exp-card @(Model.Input.TipoEsperienza == "grotte" ? "active" : "")" data-tipo="grotte">
-                            <div class="exp-icon">🏖️</div>
+                            <div class="exp-icon" aria-hidden="true">03</div>
                             <h3>Tour Grotte di Leuca</h3>
                             <p>Costa Ionica e Adriatica, soste bagno nelle calette più suggestive e tarallini con vino locale.</p>
                             <span class="exp-price">Da € 35 a persona</span>
@@ -173,7 +178,7 @@
                         <!-- Mattina -->
                         <div class="slot-pill @(Model.Input.FasciaOraria == "mattina" || string.IsNullOrEmpty(Model.Input.FasciaOraria) ? "active" : "")" 
                              data-slot="mattina" data-orario="10:00 – 14:00" data-titolo="Mezza Giornata Mattina">
-                            <span class="sp-icon">🌅</span>
+                            <span class="sp-icon" aria-hidden="true"></span>
                             <div class="sp-info">
                                 <strong>Mattina: 10:00 – 14:00</strong>
                                 <span>Mezza giornata con aperitivo e soste bagno rilassanti</span>
@@ -184,7 +189,7 @@
                         <!-- Pomeriggio -->
                         <div class="slot-pill @(Model.Input.FasciaOraria == "pomeriggio" ? "active" : "")" 
                              data-slot="pomeriggio" data-orario="14:30 – 18:30" data-titolo="Mezza Giornata Pomeriggio / Tramonto">
-                            <span class="sp-icon">🌇</span>
+                            <span class="sp-icon" aria-hidden="true"></span>
                             <div class="sp-info">
                                 <strong>Pomeriggio: 14:30 – 18:30</strong>
                                 <span>Bagni al sole e calice di prosecco al tramonto</span>
@@ -195,7 +200,7 @@
                         <!-- Full Day -->
                         <div class="slot-pill @(Model.Input.FasciaOraria == "fullday" ? "active" : "")" 
                              data-slot="fullday" data-orario="10:00 – 18:00" data-titolo="Full Day (Giornata Intera)">
-                            <span class="sp-icon">☀️</span>
+                            <span class="sp-icon" aria-hidden="true"></span>
                             <div class="sp-info">
                                 <strong>Full Day: 10:00 – 18:00</strong>
                                 <span>8 ore esclusive: versante Ionico, Adriatico e pranzo in rada</span>
@@ -203,39 +208,25 @@
                             <span class="sp-price" id="pill-price-fullday">€ 1.500</span>
                         </div>
                     </div>
+                    <span asp-validation-for="Input.FasciaOraria" class="err-txt"></span>
                 </div>
 
-                <!-- STEP 4: Calendario Disponibilità -->
+                <!-- STEP 4: Data preferita -->
                 <div class="bstep-box">
                     <div class="bstep-header">
                         <span class="bstep-num">4</span>
-                        <h2>Verifica la Disponibilità sul Calendario</h2>
+                        <h2>Indica la data preferita</h2>
                     </div>
                     <p style="color:var(--muted); margin-bottom:1rem; font-size:0.95rem;">
-                        Tocca un giorno libero sul calendario per selezionare la data della tua uscita:
+                        La data è una preferenza: ti confermeremo la disponibilità dopo aver ricevuto la richiesta.
                     </p>
 
-                    <div class="cal-widget">
-                        <div class="cal-header">
-                            <h3 id="cal-title-display" style="margin:0; font-size:1.2rem;">Luglio / Agosto 2025</h3>
-                            <div class="cal-legend">
-                                <span><i class="dot dot-avail"></i> Libero</span>
-                                <span><i class="dot dot-limited"></i> 1 disponibilità</span>
-                                <span><i class="dot dot-full"></i> Occupato</span>
-                            </div>
-                        </div>
-
-                        <div class="cal-days-grid" id="main-booking-cal">
-                            <!-- Popolato da JS -->
-                        </div>
-                    </div>
-
-                    <div style="margin-top:1.2rem; display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
-                        <label style="margin:0; font-weight:600; font-size:0.95rem;">Oppure imposta manualmente la data:</label>
-                        <input type="date" id="manual-date-picker" min="@minDate" max="@maxDate" 
-                               value="@(Model.Input.Data?.ToString("yyyy-MM-dd") ?? minDate)"
+                    <div style="display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
+                        <label for="manual-date-picker" style="margin:0; font-weight:600; font-size:0.95rem;">Data desiderata *</label>
+                        <input asp-for="Input.Data" type="date" id="manual-date-picker" min="@minDate" max="@maxDate" required
                                style="padding:0.5rem 0.8rem; border:1.5px solid var(--line); border-radius:0.5rem; background:var(--bg); color:var(--ink); font:inherit;" />
                     </div>
+                    <span asp-validation-for="Input.Data" class="err-txt"></span>
                 </div>
 
                 <!-- STEP 5: Dati di Contatto -->
@@ -255,6 +246,7 @@
                         <label>
                             Numero passeggeri previsti *
                             <input asp-for="Input.Persone" type="number" min="1" max="20" required style="background:var(--bg);" id="input-persone" />
+                            <small id="pax-limit" style="color:var(--muted);">Capienza massima: 10 ospiti</small>
                             <span asp-validation-for="Input.Persone" class="err-txt"></span>
                         </label>
                     </div>
@@ -308,7 +300,7 @@
                             <li><strong>Esperienza:</strong> <span id="sb-exp-name">Charter Yacht Esclusivo</span></li>
                             <li id="sb-yacht-row"><strong>Yacht:</strong> <span id="sb-yacht-name">Awave 48 Luxury Open</span></li>
                             <li><strong>Fascia Oraria:</strong> <span id="sb-slot-time">10:00 – 14:00</span></li>
-                            <li><strong>Data Uscita:</strong> <strong id="sb-date-text" style="color:var(--sea);">Seleziona dal calendario</strong></li>
+                            <li><strong>Data preferita:</strong> <strong id="sb-date-text" style="color:var(--sea);">Seleziona una data</strong></li>
                             <li><strong>Partenza:</strong> <span>Porto Turistico di Santa Maria di Leuca</span></li>
                         </ul>
 
@@ -317,11 +309,11 @@
                         </button>
 
                         <a class="btn wa block" id="btn-wa-live" href="https://wa.me/393287451542" target="_blank" rel="noopener">
-                            💬 Chiedi conferma immediata su WhatsApp
+                            Chiedi conferma su WhatsApp
                         </a>
 
                         <div style="margin-top:1.5rem; padding-top:1rem; border-top:1px solid var(--line); font-size:0.85rem; color:var(--muted); line-height:1.5;">
-                            🛡️ <strong>Garanzia Meteo Salento:</strong> In caso di mare mosso o vento sfavorevole, spostamento gratuito della data o rimborso totale garantito.
+                            <strong>Garanzia Meteo Salento:</strong> In caso di mare mosso o vento sfavorevole, spostamento gratuito della data o rimborso totale garantito.
                         </div>
                     </div>
                 </div>
@@ -342,9 +334,9 @@
     var hiddenTipo = document.getElementById("hidden-tipo-esperienza");
     var hiddenYacht = document.getElementById("hidden-yacht");
     var hiddenFascia = document.getElementById("hidden-fascia-oraria");
-    var hiddenData = document.getElementById("hidden-data-input");
     var manualDatePicker = document.getElementById("manual-date-picker");
     var inputPersone = document.getElementById("input-persone");
+    var paxLimit = document.getElementById("pax-limit");
     
     var sbPriceTotal = document.getElementById("sb-price-total");
     var sbPriceSub = document.getElementById("sb-price-sub");
@@ -358,7 +350,6 @@
     var pillPriceMattina = document.getElementById("pill-price-mattina");
     var pillPricePomeriggio = document.getElementById("pill-price-pomeriggio");
     var pillPriceFullday = document.getElementById("pill-price-fullday");
-    var mainBookingCal = document.getElementById("main-booking-cal");
 
     // Dati flotta yacht
     var yachtData = {
@@ -372,15 +363,23 @@
         tipo: hiddenTipo.value || "charter",
         yacht: hiddenYacht.value || "awave",
         slot: hiddenFascia.value || "mattina",
-        data: manualDatePicker.value || "",
-        giornoSel: null
+        data: manualDatePicker.value || ""
     };
 
     function updateView() {
+        if (state.tipo === "grecia") state.slot = "fullday";
+        else if (state.tipo === "grotte" && state.slot === "fullday") state.slot = "mattina";
+
         hiddenTipo.value = state.tipo;
         hiddenYacht.value = state.yacht;
         hiddenFascia.value = state.slot;
-        hiddenData.value = state.data;
+
+        slotPills.forEach(function(pill) {
+            var isFullDay = pill.dataset.slot === "fullday";
+            var hidden = state.tipo === "grecia" ? !isFullDay : state.tipo === "grotte" && isFullDay;
+            pill.style.display = hidden ? "none" : "";
+            pill.classList.toggle("active", pill.dataset.slot === state.slot);
+        });
 
         // Visualizzazione step yacht
         if (state.tipo === "charter") {
@@ -389,6 +388,8 @@
             sbExpName.textContent = "Charter Yacht Esclusivo";
             var yObj = yachtData[state.yacht] || yachtData["awave"];
             sbYachtName.textContent = yObj.nome;
+            inputPersone.max = String(yObj.maxPax);
+            paxLimit.textContent = "Capienza massima: " + yObj.maxPax + " ospiti";
 
             // Aggiorna prezzi sulle pillole slot
             pillPriceMattina.textContent = "€ " + yObj.mattina.toLocaleString("it-IT");
@@ -413,6 +414,8 @@
             sbYachtRow.style.display = "none";
             sbExpName.textContent = "Tour in Grecia (Isole Diapontie)";
             sbSlotTime.textContent = "Full Day: 08:30 – 19:30";
+            inputPersone.max = "12";
+            paxLimit.textContent = "Gruppo massimo: 12 ospiti";
             
             var nPax = parseInt(inputPersone.value, 10) || 2;
             var totG = nPax * 180;
@@ -424,6 +427,8 @@
             sbYachtRow.style.display = "none";
             sbExpName.textContent = "Tour Grotte di Leuca";
             sbSlotTime.textContent = state.slot === "pomeriggio" ? "14:30 – 18:00" : "10:00 – 13:30";
+            inputPersone.max = "20";
+            paxLimit.textContent = "Indica il numero di ospiti";
             
             var nPaxG = parseInt(inputPersone.value, 10) || 2;
             var totGr = nPaxG * 35;
@@ -432,9 +437,9 @@
         }
 
         if (state.data) {
-            sbDateText.textContent = state.data;
+            sbDateText.textContent = new Date(state.data + "T00:00:00").toLocaleDateString("it-IT", { day: "numeric", month: "long", year: "numeric" });
         } else {
-            sbDateText.textContent = "Seleziona dal calendario";
+            sbDateText.textContent = "Seleziona una data";
         }
 
         // WhatsApp link
@@ -444,37 +449,6 @@
                     (state.data ? " in data " + state.data : "") +
                     " per " + inputPersone.value + " persone.";
         btnWaLive.href = "https://wa.me/393287451542?text=" + encodeURIComponent(waMsg);
-    }
-
-    function renderCalendar() {
-        mainBookingCal.innerHTML = "";
-        for (var d = 1; d <= 31; d++) {
-            var b = document.createElement("button");
-            b.type = "button";
-            var status = (d % 7 === 0) ? "full" : ((d % 5 === 0) ? "limited" : "avail");
-            var stTxt = status === "full" ? "Pieno" : (status === "limited" ? "1 rimasto" : "Libero");
-            b.className = "cal-day " + status + (state.giornoSel === d ? " selected" : "");
-            b.innerHTML = "<span class='day-num'>" + d + "</span><span class='day-status'>" + stTxt + "</span>";
-
-            if (status !== "full") {
-                (function(dayNum) {
-                    b.addEventListener("click", function() {
-                        state.giornoSel = dayNum;
-                        var now = new Date();
-                        var y = now.getFullYear();
-                        var m = String(now.getMonth() + 1).padStart(2, '0');
-                        var dStr = String(dayNum).padStart(2, '0');
-                        state.data = y + "-" + m + "-" + dStr;
-                        manualDatePicker.value = state.data;
-                        renderCalendar();
-                        updateView();
-                    });
-                })(d);
-            } else {
-                b.disabled = true;
-            }
-            mainBookingCal.appendChild(b);
-        }
     }
 
     // Event listeners
@@ -507,14 +481,11 @@
 
     manualDatePicker.addEventListener("change", function() {
         state.data = manualDatePicker.value;
-        state.giornoSel = null;
-        renderCalendar();
         updateView();
     });
 
     inputPersone.addEventListener("input", updateView);
 
-    renderCalendar();
     updateView();
 })();
 </script>

@@ -1,43 +1,25 @@
 @page
 @inject WebAppColax.Services.BarcheService Servizio
 @{
-    ViewData["Title"] = "Charter yacht e tour in barca a Santa Maria di Leuca";
-    ViewData["Cover"] = true; // header trasparente sopra la hero
-    ViewData["Description"] = "Charter yacht esclusivo, tour in Grecia e tour delle grotte da Santa Maria di Leuca. Barche usate in vendita.";
+    ViewData["Title"] = "Esperienze in barca a Santa Maria di Leuca";
+    ViewData["Cover"] = true;
+    ViewData["Description"] = "Scopri Santa Maria di Leuca dal mare: charter privati, tour delle grotte e giornate in Grecia con partenza dal porto.";
 
     var tripUrl = "https://www.tripadvisor.it/Attraction_Review-g580229-d26363949-Reviews-Armatori_Salentini-Santa_Maria_di_Leuca_Castrignano_del_Capo_Province_of_Lecce_P.html";
-
-    // INSTAGRAM: inserisci qui il link del profilo (es. https://www.instagram.com/nomeprofilo/)
     var instagramUrl = "https://www.instagram.com/armatorisalentini/";
-
-    // GALLERY: foto in wwwroot/img/gallery/gallery-01.jpg ... gallery-09.jpg
-    // Url = link del singolo post (es. https://www.instagram.com/p/XXXXXXXX/); finché non lo cambi apre il profilo
+    var heroFoto = Enumerable.Range(1, 4).Select(i => $"~/img/hero/hero-{i}.jpg").ToList();
     var galleria = Enumerable.Range(1, 9).Select(i => new
     {
         Foto = $"~/img/gallery/gallery-{i:00}.jpg",
-        Alt = $"Foto {i} dal nostro profilo Instagram",
-        Url = instagramUrl
+        Alt = $"Armatori Salentini in navigazione a Santa Maria di Leuca"
     }).ToList();
-
-    // FOTO HERO (carosello): wwwroot/img/hero/hero-1.jpg ... hero-4.jpg
-    var heroFoto = Enumerable.Range(1, 4).Select(i => $"~/img/hero/hero-{i}.jpg").ToList();
-
-    // SERVIZI: esperienze e tour da Leuca
     var servizi = new[]
     {
-        new { Id = "charter", Nome = "Charter yacht esclusivo", Teaser = "Rotta, orari e servizi a bordo su misura con skipper.", Foto = "~/img/servizi/charter.jpg",
-              Testo = "Uno yacht tutto per te e i tuoi ospiti, con rotta, orari e servizi a bordo costruiti attorno alle tue esigenze.",
-              Durata = "10-14 | 14:30-18:30 | 10-18", Prezzo = "Da € 500 mezza giornata", Prenota = false, Link = "/charter-yacht", C1 = "#0b5c73", C2 = "#08232e" },
-        new { Id = "grecia", Nome = "Tour in Grecia", Teaser = "Dalla punta del Salento alle isole Diapontie (Othonoi e Mathraki).", Foto = "~/img/servizi/grecia.jpg",
-              Testo = "Una giornata di grande navigazione da Santa Maria di Leuca fino alle isole greche con soste bagno in calette paradisiache.",
-              Durata = "Giornata intera (08:30 – 19:30)", Prezzo = "Da € 180 a persona", Prenota = true, Link = "/tour-grecia", C1 = "#12485a", C2 = "#0a2530" },
-        new { Id = "grotte", Nome = "Tour alle grotte di Leuca", Teaser = "Versante Ionico e Adriatico, falesie e aperitivo a bordo.", Foto = "~/img/servizi/grotte.jpg",
-              Testo = "Le più celebri grotte della costa di Leuca viste dal mare, tra scogliere spettacolari, soste bagno e aperitivo tipico salentino.",
-              Durata = "3 ore (partenze mattina e pomeriggio)", Prezzo = "Da € 35 a persona", Prenota = true, Link = "/Prenota?tour=grotte", C1 = "#1a6f86", C2 = "#0b2f3b" },
+        new { Numero = "01", Nome = "Charter privato", Teaser = "Una barca tutta per voi, una rotta da scegliere insieme e il tempo di vivere il mare senza fretta.", Foto = "~/img/servizi/charter.jpg", Dettaglio = "DA MEZZA GIORNATA A GIORNATA INTERA", Link = "/charter-yacht", LinkText = "Scopri il charter" },
+        new { Numero = "02", Nome = "Le grotte di Leuca", Teaser = "La costa vista dall’acqua, tra cavità marine, scogliere chiare e soste per un bagno.", Foto = "~/img/servizi/grotte.jpg", Dettaglio = "COSTA IONICA E ADRIATICA", Link = "/Prenota?tour=grotte", LinkText = "Esplora le grotte" },
+        new { Numero = "03", Nome = "Una giornata in Grecia", Teaser = "Attraversa lo Ionio verso Othonoi e Mathraki, per una giornata diversa dal solito.", Foto = "~/img/servizi/grecia.jpg", Dettaglio = "ISOLE DIAPONTIE · PARTENZA DA LEUCA", Link = "/tour-grecia", LinkText = "Scopri il tour" }
     };
-
-    // BARCHE USATE: arrivano da Data/barche.json (stesso elenco del catalogo). Qui si mostrano le prime 10.
-    var barche = Servizio.InVendita.Take(10).Select(b => new
+    var barche = Servizio.InVendita.Take(3).Select(b => new
     {
         b.Nome,
         b.Slug,
@@ -46,215 +28,285 @@
         b.Lunghezza,
         b.Prezzo
     }).ToList();
-
-    // RECENSIONI: recensioni autentiche degli ospiti da TripAdvisor
+    var yachtSlides = Servizio.InVendita.Where(b => b.Foto.Any()).Take(5).Select(b => new
+    {
+        b.Nome,
+        Foto = b.Foto.First()
+    }).ToList();
     var recensioni = new[]
     {
-        new { Stelle = 5, Testo = "Esperienza indimenticabile alle grotte di Leuca! Skipper preparatissimo, ci ha fatto scoprire angoli meravigliosi e raccontato le storie di ogni grotta. L'aperitivo a bordo al tramonto è stato il tocco finale.", Autore = "Marco B.", Data = "Agosto 2024" },
-        new { Stelle = 5, Testo = "Giornata fantastica fino all'isola di Fanò in Grecia! Mare stupendo, barca pulita, comodissima e navigazione impeccabile. Consigliatissimi per serietà ed accoglienza.", Autore = "Giulia & Andrea", Data = "Luglio 2024" },
-        new { Stelle = 5, Testo = "Abbiamo noleggiato uno yacht in esclusiva con skipper per festeggiare una ricorrenza in famiglia. Tutto curato nei minimi dettagli, cibo ottimo e tanta disponibilità. Cinque stelle meritatissime!", Autore = "Valentina S.", Data = "Giugno 2024" },
-        new { Stelle = 5, Testo = "I numeri uno a Santa Maria di Leuca! Il tour che tocca sia il versante di ponente che quello di levante è straordinario. Soste bagno nei punti più limpidi del Salento.", Autore = "Roberto M.", Data = "Settembre 2023" },
-        new { Stelle = 5, Testo = "Professionalità, sicurezza a bordo e gentilezza unica. Anche con bambini a bordo ci siamo sentiti sereni e coccolati dall'inizio alla fine.", Autore = "Chiara F.", Data = "Agosto 2023" }
+        new { Stelle = 5, Testo = "Esperienza indimenticabile alle grotte di Leuca! Skipper preparatissimo e aperitivo a bordo al tramonto.", Autore = "Marco B.", Data = "Agosto 2024" },
+        new { Stelle = 5, Testo = "Giornata fantastica fino all’isola di Fanò in Grecia! Mare stupendo e navigazione impeccabile.", Autore = "Giulia & Andrea", Data = "Luglio 2024" },
+        new { Stelle = 5, Testo = "Tutto curato nei minimi dettagli, cibo ottimo e tanta disponibilità. Cinque stelle meritatissime!", Autore = "Valentina S.", Data = "Giugno 2024" },
+        new { Stelle = 5, Testo = "Il tour tocca sia il versante di ponente che quello di levante: soste bagno nei punti più limpidi del Salento.", Autore = "Roberto M.", Data = "Settembre 2023" },
+        new { Stelle = 5, Testo = "Professionalità, sicurezza a bordo e gentilezza unica. Ci siamo sentiti sereni e coccolati dall’inizio alla fine.", Autore = "Chiara F.", Data = "Agosto 2023" }
     }.ToList();
+    var dataMinima = DateTime.Today.ToString("yyyy-MM-dd");
 }
 
-<section class="cover" aria-label="Presentazione">
-    <div class="slides" aria-hidden="true">
+<section class="home-hero" aria-label="Armatori Salentini, esperienze in barca a Leuca">
+    <div class="hero-slides" aria-hidden="true">
         @for (var i = 0; i < heroFoto.Count; i++)
         {
-            <div class="@(i == 0 ? "slide on" : "slide")" style="background-image:url('@Url.Content(heroFoto[i])')"></div>
+            <div class="hero-slide @(i == 0 ? "is-active" : "")" style="background-image:url('@Url.Content(heroFoto[i])')"></div>
         }
     </div>
-    <div class="wrap">
-        <h1>Il Salento visto dal mare.</h1>
-        <p>Charter di lusso, tour delle grotte e viaggi verso la Grecia: parti da Santa Maria di Leuca e scegli la tua rotta.</p>
-        <a class="btn" href="#tour">Scopri i servizi</a>
+    <div class="hero-shade" aria-hidden="true"></div>
+    <div class="wrap hero-content">
+        <p class="eyebrow eyebrow-light">ARMATORI SALENTINI <span>·</span> SANTA MARIA DI LEUCA</p>
+        <h1>Il Salento<br />comincia dal mare.</h1>
+        <p class="hero-description">Rotte private, grotte e isole da scoprire. Si parte dal porto di Leuca, con chi questo mare lo vive ogni giorno.</p>
+        <div class="hero-actions">
+            <a class="btn btn-light" href="#esperienze">Esplora le esperienze <span aria-hidden="true">↘</span></a>
+            <a class="text-link text-link-light" asp-page="/Contatti">Parla con il nostro equipaggio <span aria-hidden="true">↗</span></a>
+        </div>
     </div>
-    <div class="dots" role="group" aria-label="Scegli la foto">
+    <div class="hero-caption"><span>39°48′ N — 18°21′ E</span><span>Il punto più a sud della Puglia</span></div>
+    <div class="hero-pagination" role="group" aria-label="Scegli la fotografia di copertina">
         @for (var i = 0; i < heroFoto.Count; i++)
         {
-            <button type="button" aria-label="Foto @(i + 1)" aria-current="@(i == 0 ? "true" : "false")"></button>
+            <button type="button" aria-label="Mostra fotografia @(i + 1)" aria-current="@(i == 0 ? "true" : "false")"></button>
         }
     </div>
 </section>
 
-<div class="wrap">
-    <section id="tour">
-        <h2>Come vuoi vivere il mare?</h2>
-        <p class="lead">Tocca un'esperienza per scoprire tutti i dettagli.</p>
-        <div class="svc-row">
-            @foreach (var s in servizi)
-            {
-                <article class="svc" style="--c1:@s.C1;--c2:@s.C2">
-                    <div class="bg" style="background-image:url('@Url.Content(s.Foto)')"></div>
-                    <div class="svc-in">
-                        <h3 class="svc-title">@s.Nome</h3>
-                        <p class="teaser">@s.Teaser</p>
-                        <p style="margin:0; font-size:0.85rem; color:var(--sun); font-weight:600;">@s.Durata · @s.Prezzo</p>
-                        <a class="btn" href="@s.Link" aria-label="Prenota @s.Nome">Prenota esperienza →</a>
-                    </div>
-                </article>
-            }
+<div class="wrap quick-search-wrap">
+    <form class="quick-search" method="get" asp-page="/Prenota" aria-label="Inizia una richiesta di prenotazione">
+        <label class="search-field">
+            <span>La tua esperienza</span>
+            <select name="tour" aria-label="Seleziona un’esperienza">
+                <option value="charter">Charter privato</option>
+                <option value="grotte">Tour delle grotte</option>
+                <option value="grecia">Tour in Grecia</option>
+            </select>
+        </label>
+        <label class="search-field">
+            <span>Quando vuoi partire?</span>
+            <input type="date" name="data" min="@dataMinima" aria-label="Data preferita" />
+        </label>
+        <label class="search-field search-guests">
+            <span>Ospiti</span>
+            <select name="persone" aria-label="Numero di ospiti">
+                @for (var persone = 1; persone <= 12; persone++)
+                {
+                    <option value="@persone" selected="@(persone == 2 ? "selected" : null)">@persone @(persone == 1 ? "ospite" : "ospiti")</option>
+                }
+            </select>
+        </label>
+        <button class="btn btn-search" type="submit">Verifica disponibilità <span aria-hidden="true">→</span></button>
+    </form>
+</div>
+
+<div class="home-page">
+    <section class="home-intro section-pad" id="esperienze">
+        <div class="wrap">
+            <div class="intro-heading">
+                <div>
+                    <p class="eyebrow">IL MARE, COME PIACE A TE</p>
+                    <h2>Ogni rotta ha il suo ritmo.</h2>
+                </div>
+            </div>
+            <div class="experience-grid">
+                @foreach (var s in servizi)
+                {
+                    <article class="experience-card">
+                        <a class="experience-image" href="@s.Link" aria-label="@s.LinkText: @s.Nome" style="background-image:url('@Url.Content(s.Foto)')">
+                            <span class="experience-number">@s.Numero</span>
+                        </a>
+                        <div class="experience-copy">
+                            <p class="eyebrow">@s.Dettaglio</p>
+                            <h3>@s.Nome</h3>
+                            <p>@s.Teaser</p>
+                            <a class="text-link" href="@s.Link">@s.LinkText <span aria-hidden="true">↗</span></a>
+                        </div>
+                    </article>
+                }
+            </div>
         </div>
     </section>
 
-    <section id="gallery">
-        <div class="sec-head">
-            <div>
-                <h2>Dal nostro Instagram</h2>
-                <p class="lead">Il nostro mare, scatto dopo scatto.</p>
-            </div>
-            <a class="btn sea" href="@instagramUrl" target="_blank" rel="noopener">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" /></svg>Seguici su Instagram
-            </a>
-        </div>
-        <div class="gal">
-            @foreach (var g in galleria)
+    <section class="coast-story" aria-labelledby="coast-title">
+        <div class="story-image" role="region" aria-roledescription="carosello" aria-label="Fotografie degli yacht della flotta">
+            @for (var i = 0; i < yachtSlides.Count; i++)
             {
-                <a href="@g.Url" target="_blank" rel="noopener" aria-label="@g.Alt, apri su Instagram"
-                   style="background-image:url('@Url.Content(g.Foto)'),linear-gradient(160deg,#1a6f86,#0b2f3b)"></a>
+                <div class="story-slide @(i == 0 ? "is-active" : "")" role="img" aria-label="@yachtSlides[i].Nome, yacht della flotta Armatori Salentini" aria-hidden="@(i == 0 ? "false" : "true")" style="background-image:url('@Url.Content(yachtSlides[i].Foto)')"></div>
             }
+            <span class="image-note">LA FLOTTA, DA VICINO</span>
+            @if (yachtSlides.Count > 1)
+            {
+                <div class="story-carousel-controls" role="group" aria-label="Scorri le fotografie degli yacht">
+                    <button type="button" data-yacht-step="-1" aria-label="Yacht precedente">←</button>
+                    <span aria-live="polite"><span data-yacht-current>01</span> / @yachtSlides.Count.ToString("00")</span>
+                    <button type="button" data-yacht-step="1" aria-label="Yacht successivo">→</button>
+                </div>
+            }
+        </div>
+        <div class="story-copy">
+            <p class="eyebrow">TRA DUE MARI, UNA SOLA CASA</p>
+            <h2 id="coast-title">La costa cambia.<br />Il tempo rallenta.</h2>
+            <p>Da una parte lo Ionio, dall’altra l’Adriatico. A bordo, la costa si apre tra grotte, calette e piccoli approdi. Ti accompagniamo a scoprirla con la conoscenza di chi naviga qui da sempre.</p>
+            <a class="text-link" asp-page="/Tour/Grecia">Una rotta oltre il Salento <span aria-hidden="true">↗</span></a>
+            <div class="story-facts">
+                <div><strong>2</strong><span>versanti di costa</span></div>
+                <div><strong>1</strong><span>porto di partenza</span></div>
+                <div><strong>∞</strong><span>modi di viverla</span></div>
+            </div>
         </div>
     </section>
 
     @if (barche.Any())
     {
-    <section id="usato">
-        <div class="pbox">
-            <div class="car" data-delay="3500">
-                <div class="sec-head">
+        <section class="home-listings section-pad" id="barche">
+            <div class="wrap">
+                <div class="section-heading">
                     <div>
-                        <h2>Barche usate</h2>
-                        <p class="lead">Imbarcazioni in vendita a Santa Maria di Leuca.</p>
+                        <p class="eyebrow">SELEZIONE ARMATORI SALENTINI</p>
+                        <h2>Barche in vendita.</h2>
+                        <p class="section-description">Imbarcazioni selezionate dai nostri comandanti, ormeggiate a Santa Maria di Leuca.</p>
                     </div>
-                    <div class="car-btns">
-                        <button type="button" data-act="prev" aria-label="Barche precedenti">←</button>
-                        <button type="button" data-act="next" aria-label="Barche successive">→</button>
-                    </div>
+                    <a class="text-link" asp-page="/BarcheUsate/Index">Tutto il catalogo <span aria-hidden="true">↗</span></a>
                 </div>
-                <div class="track" tabindex="0" aria-label="Barche usate in vendita">
+                <div class="listing-grid">
                     @foreach (var b in barche)
                     {
-                        <article class="bcard">
-                            <div class="bimg" style="background-image:url('@Url.Content(b.Foto)'),linear-gradient(160deg,#1a6f86,#0b2f3b)" role="img" aria-label="@b.Nome"></div>
-                            <div class="bbody">
+                        <article class="listing-card">
+                            <a class="listing-image" asp-page="/BarcheUsate/Dettaglio" asp-route-slug="@b.Slug" style="background-image:url('@Url.Content(b.Foto)')" aria-label="Apri @b.Nome">
+                                <span>@b.Anno</span>
+                            </a>
+                            <div class="listing-content">
+                                <p class="eyebrow">@b.Lunghezza</p>
                                 <h3>@b.Nome</h3>
-                                <p class="bmeta">@b.Anno · @b.Lunghezza</p>
-                                <p class="price">@b.Prezzo</p>
-                                <a class="btn sea" asp-page="/BarcheUsate/Dettaglio" asp-route-slug="@b.Slug" aria-label="Apri la scheda di @b.Nome">Vedi la scheda <span aria-hidden="true">→</span></a>
+                                <div class="listing-bottom"><strong>@b.Prezzo</strong><a asp-page="/BarcheUsate/Dettaglio" asp-route-slug="@b.Slug" aria-label="Dettagli @b.Nome">↗</a></div>
                             </div>
                         </article>
                     }
                 </div>
-                <p style="margin:1.2rem 0 0"><a class="btn" asp-page="/BarcheUsate/Index">Vedi tutte le barche</a></p>
+            </div>
+        </section>
+    }
+
+    <section class="home-gallery section-pad" aria-labelledby="gallery-title">
+        <div class="wrap">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">APPUNTI DI BORDO</p>
+                    <h2 id="gallery-title">La vita, vista dal mare.</h2>
+                </div>
+                <a class="text-link" href="@instagramUrl" target="_blank" rel="noopener">Seguici su Instagram <span aria-hidden="true">↗</span></a>
+            </div>
+            <div class="photo-grid">
+                @foreach (var g in galleria)
+                {
+                    <a href="@instagramUrl" target="_blank" rel="noopener" aria-label="@g.Alt, apri Instagram" style="background-image:url('@Url.Content(g.Foto)')"></a>
+                }
             </div>
         </div>
     </section>
-    }
 
-    <section id="recensioni">
-        <div class="car" data-delay="4500">
-            <div class="sec-head">
-                <div>
-                    <h2>Dicono di noi</h2>
-                    <p class="lead">Le recensioni dei nostri ospiti su TripAdvisor.</p>
+    <section class="review-section section-pad" id="recensioni">
+        <div class="wrap review-panel">
+                <div class="review-message">
+                <p class="eyebrow">DOPO UNA GIORNATA IN MARE</p>
+                <h2>Le storie migliori sono quelle raccontate da voi.</h2>
+                <p>Leggi le esperienze degli ospiti sul profilo ufficiale Armatori Salentini.</p>
+                <a class="btn btn-outline" href="@tripUrl" target="_blank" rel="noopener noreferrer">Leggi le recensioni <span aria-hidden="true">↗</span></a>
+            </div>
+            <div class="review-score" aria-label="Valutazione TripAdvisor: 4,9 su 5">
+                <span class="score-number">4,9</span><span class="score-outof">/ 5</span>
+                <span class="score-stars" aria-hidden="true">★★★★★</span>
+                <span class="score-caption">Su TripAdvisor</span>
+            </div>
+            <div class="review-carousel" aria-label="Recensioni TripAdvisor">
+                <div class="review-carousel-head">
+                    <p class="eyebrow">LE VOSTRE PAROLE</p>
+                    <div class="review-controls" role="group" aria-label="Scorri le recensioni">
+                        <button type="button" data-review-step="-1" aria-label="Recensione precedente">←</button>
+                        <button type="button" data-review-step="1" aria-label="Recensione successiva">→</button>
+                    </div>
                 </div>
-                <div class="car-btns">
-                    <button type="button" data-act="prev" aria-label="Recensioni precedenti">←</button>
-                    <button type="button" data-act="next" aria-label="Recensioni successive">→</button>
+                <div class="review-track" tabindex="0" aria-label="Recensioni degli ospiti">
+                    @foreach (var r in recensioni)
+                    {
+                        <article class="review-card">
+                            <span class="review-stars" aria-label="@r.Stelle stelle su 5">@(new string('★', r.Stelle))</span>
+                            <p>“@r.Testo”</p>
+                            <footer>@r.Autore <span>· @r.Data</span></footer>
+                        </article>
+                    }
                 </div>
             </div>
-            @* Se usi il widget ufficiale TripAdvisor, incolla qui il suo codice al posto del blocco .track *@
-            <div class="track" tabindex="0" aria-label="Recensioni TripAdvisor">
-                @foreach (var r in recensioni)
-                {
-                    <article class="review">
-                        <div class="stars" aria-label="@r.Stelle stelle su 5">@(new string('★', r.Stelle))</div>
-                        <p>@r.Testo</p>
-                        <footer>@r.Autore · @r.Data</footer>
-                    </article>
-                }
-            </div>
-            <p><a href="@tripUrl" target="_blank" rel="noopener">Leggi tutte le recensioni su TripAdvisor →</a></p>
         </div>
     </section>
 </div>
 
 @section Scripts {
 <script>
-var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-// Hero: cambia solo la foto
 (function () {
-  var slides = document.querySelectorAll(".slide"), dots = document.querySelectorAll(".dots button"), i = 0, timer;
-  function show(n) {
-    i = (n + slides.length) % slides.length;
-    slides.forEach(function (s, k) { s.classList.toggle("on", k === i); });
-    dots.forEach(function (d, k) { d.setAttribute("aria-current", k === i ? "true" : "false"); });
+  var slides = document.querySelectorAll(".hero-slide");
+  var dots = document.querySelectorAll(".hero-pagination button");
+  if (slides.length < 2 || !dots.length) return;
+  var index = 0;
+  var timer;
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function show(next) {
+    index = (next + slides.length) % slides.length;
+    slides.forEach(function (slide, i) { slide.classList.toggle("is-active", i === index); });
+    dots.forEach(function (dot, i) { dot.setAttribute("aria-current", i === index ? "true" : "false"); });
   }
-  function start() {
-    if (reduce || slides.length < 2) return;
-    clearInterval(timer);
-    timer = setInterval(function () { if (document.visibilityState === "visible") show(i + 1); }, 6000);
+  function restart() {
+    if (reduceMotion) return;
+    window.clearInterval(timer);
+    timer = window.setInterval(function () {
+      if (document.visibilityState === "visible") show(index + 1);
+    }, 7000);
   }
-  dots.forEach(function (d, k) { d.addEventListener("click", function () { show(k); start(); }); });
-  start();
+  dots.forEach(function (dot, i) { dot.addEventListener("click", function () { show(i); restart(); }); });
+  restart();
 })();
 
-// Caroselli (barche e recensioni): scorrono da soli in loop infinito, senza fine
-document.querySelectorAll(".car").forEach(function (car) {
-  var track = car.querySelector(".track");
-  if (!track || !track.children.length) return;
-  var delay = Number(car.dataset.delay) || 4000;
-  var userPaused = reduce, hover = false, visible = true, hold = 0, W = 0, idle;
-
-  // Triplico le schede: il salto di una "serie" è invisibile perché il contenuto è identico
-  var originals = Array.prototype.slice.call(track.children);
-  for (var c = 0; c < 2; c++) {
-    originals.forEach(function (el) {
-      var k = el.cloneNode(true);
-      k.setAttribute("aria-hidden", "true");
-      k.inert = true;
-      track.appendChild(k);
+(function () {
+  var container = document.querySelector(".story-image");
+  if (!container) return;
+  var slides = container.querySelectorAll(".story-slide");
+  var counter = container.querySelector("[data-yacht-current]");
+  var buttons = container.querySelectorAll("[data-yacht-step]");
+  if (slides.length < 2 || !buttons.length) return;
+  var index = 0;
+  var timer;
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function show(next) {
+    index = (next + slides.length) % slides.length;
+    slides.forEach(function (slide, i) {
+      slide.classList.toggle("is-active", i === index);
+      slide.setAttribute("aria-hidden", i === index ? "false" : "true");
     });
+    if (counter) counter.textContent = String(index + 1).padStart(2, "0");
   }
-
-  function measure() {
-    W = track.children[originals.length].offsetLeft - track.children[0].offsetLeft;
-    track.scrollTo({ left: W, behavior: "auto" });
+  function restart() {
+    window.clearInterval(timer);
+    if (reduceMotion) return;
+    timer = window.setInterval(function () {
+      if (document.visibilityState === "visible") show(index + 1);
+    }, 6500);
   }
-  function wrap() {
-    var sl = track.scrollLeft;
-    if (sl >= 2 * W - 2) track.scrollTo({ left: sl - W, behavior: "auto" });
-    else if (sl < W - 2) track.scrollTo({ left: sl + W, behavior: "auto" });
-  }
-  function step() {
-    var gap = parseFloat(getComputedStyle(track).columnGap) || 16;
-    return track.children[0].getBoundingClientRect().width + gap;
-  }
-  function pauseBriefly() { hold = Date.now() + 8000; }
+  buttons.forEach(function (button) {
+    button.addEventListener("click", function () {
+      show(index + Number(button.getAttribute("data-yacht-step")));
+      restart();
+    });
+  });
+  restart();
+})();
 
-  requestAnimationFrame(measure);
-  window.addEventListener("load", measure);
-  window.addEventListener("resize", measure);
-  // Il salto avviene solo a scorrimento fermo, così non interrompe animazioni né inerzia
-  track.addEventListener("scroll", function () { clearTimeout(idle); idle = setTimeout(wrap, 160); }, { passive: true });
-
-  setInterval(function () {
-    if (!userPaused && !hover && visible && document.visibilityState === "visible" && Date.now() > hold) {
-      track.scrollBy({ left: step(), behavior: "smooth" });
-    }
-  }, delay);
-
-  track.addEventListener("mouseenter", function () { hover = true; });
-  track.addEventListener("mouseleave", function () { hover = false; });
-  track.addEventListener("focusin", function () { hover = true; });
-  track.addEventListener("focusout", function () { hover = false; });
-  track.addEventListener("touchstart", pauseBriefly, { passive: true });
-  track.addEventListener("wheel", pauseBriefly, { passive: true });
-  car.querySelector('[data-act="prev"]').addEventListener("click", function () { pauseBriefly(); track.scrollBy({ left: -step(), behavior: "smooth" }); });
-  car.querySelector('[data-act="next"]').addEventListener("click", function () { pauseBriefly(); track.scrollBy({ left: step(), behavior: "smooth" }); });
-  if ("IntersectionObserver" in window) new IntersectionObserver(function (e) { visible = e[0].isIntersecting; }).observe(track);
-});
+(function () {
+  var track = document.querySelector(".review-track");
+  if (!track) return;
+  document.querySelectorAll("[data-review-step]").forEach(function (button) {
+    button.addEventListener("click", function () {
+      var direction = Number(button.getAttribute("data-review-step"));
+      track.scrollBy({ left: direction * Math.min(track.clientWidth * .8, 440), behavior: "smooth" });
+    });
+  });
+})();
 </script>
 }

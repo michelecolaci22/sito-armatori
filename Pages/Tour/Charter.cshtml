@@ -13,14 +13,14 @@
     <!-- Hero Charter -->
     <header class="tour-hero" style="background-image:linear-gradient(180deg, rgba(8,35,46,0.3) 0%, rgba(8,35,46,0.9) 100%), url('@Url.Content("~/img/servizi/charter.jpg")');">
         <div class="tour-hero-content">
-            <span class="tour-badge">🛥️ Noleggio con Comandante</span>
+            <span class="tour-badge">Noleggio con comandante</span>
             <h1>Charter Yacht Privato a Leuca</h1>
             <p class="tour-subtitle">Uno yacht a tua completa disposizione per scoprire le coste del Salento o navigare in totale privacy. Scegli l'imbarcazione della nostra flotta più adatta alle tue esigenze.</p>
             <div class="tour-quick-facts">
-                <div><span>⚓ Rotta</span><strong>Ionico o Adriatico a scelta</strong></div>
-                <div><span>👨‍✈️ Servizio</span><strong>Skipper e aperitivo inclusi</strong></div>
-                <div><span>🕒 Orari fissi</span><strong>10-14 | 14:30-18:30 | 10-18</strong></div>
-                <div><span>🍾 Extra</span><strong>Catering & champagne su richiesta</strong></div>
+                <div><span>Rotta</span><strong>Ionico o Adriatico a scelta</strong></div>
+                <div><span>A bordo</span><strong>Skipper e aperitivo inclusi</strong></div>
+                <div><span>Orari</span><strong>10-14 | 14:30-18:30 | 10-18</strong></div>
+                <div><span>Su richiesta</span><strong>Catering e champagne</strong></div>
             </div>
         </div>
     </header>
@@ -32,7 +32,7 @@
             <!-- Step 1: Scelta dello Yacht -->
             <section class="tour-section">
                 <h2>1. Seleziona il tuo Yacht</h2>
-                <p class="lead">Gestiamo direttamente più imbarcazioni con allestimenti, dimensioni e prezzi differenti. Clicca su uno yacht per visualizzare foto, specifiche e calendario:</p>
+                <p class="lead">Gestiamo direttamente più imbarcazioni con allestimenti, dimensioni e prezzi differenti. Seleziona uno yacht e una fascia oraria per inviare una richiesta:</p>
 
                 <div class="yacht-picker-grid" id="yacht-picker">
                     <!-- Yacht 1 -->
@@ -129,7 +129,7 @@
 
                     <!-- Slot 2 -->
                     <div class="slot-card" data-slot="pomeriggio" data-title="Mezza Giornata (Pomeriggio / Tramonto)" data-orario="14:30 – 18:30">
-                        <div class="slot-badge" style="background:#e67e22;">Pomeriggio / Tramonto</div>
+                        <div class="slot-badge">Pomeriggio / Tramonto</div>
                         <div class="slot-time">14:30 – 18:30</div>
                         <h4>Mezza Giornata Pomeriggio</h4>
                         <p>Pomeriggio di bagni e relax prolungato fino al calar del sole, con calice di bollicine per brindare al tramonto sullo Ionio.</p>
@@ -141,7 +141,7 @@
 
                     <!-- Slot 3 -->
                     <div class="slot-card" data-slot="fullday" data-title="Full Day (Giornata Intera)" data-orario="10:00 – 18:00">
-                        <div class="slot-badge" style="background:#27ae60;">Esperienza Completa</div>
+                        <div class="slot-badge">Esperienza Completa</div>
                         <div class="slot-time">10:00 – 18:00</div>
                         <h4>Full Day (Giornata Intera)</h4>
                         <p>8 ore di navigazione esclusiva: tempo per visitare sia il versante di Ponente che di Levante, soste prolungate e pranzo a bordo o sosta al ristorante.</p>
@@ -153,25 +153,10 @@
                 </div>
             </section>
 
-            <!-- Step 3: Calendario Disponibilità Yacht Selezionato -->
-            <section class="tour-section" id="calendario-charter">
-                <h2>3. Calendario Disponibilità Yacht</h2>
-                <p class="lead">Disponibilità in tempo reale per lo yacht selezionato. Clicca sul giorno per bloccare la data:</p>
-
-                <div class="cal-widget">
-                    <div class="cal-header">
-                        <h3 id="cal-yacht-title" style="margin:0; font-size:1.3rem;">Disponibilità Awave 48</h3>
-                        <div class="cal-legend">
-                            <span><i class="dot dot-avail"></i> Libero</span>
-                            <span><i class="dot dot-limited"></i> Solo 1 slot rimasto</span>
-                            <span><i class="dot dot-full"></i> Occupato</span>
-                        </div>
-                    </div>
-
-                    <div class="cal-days-grid" id="charter-cal-grid">
-                        <!-- Popolato dinamicamente da JS -->
-                    </div>
-                </div>
+            <section class="tour-section" id="richiesta-charter">
+                <h2>3. Scegli la data e invia la richiesta</h2>
+                <p class="lead">Il calendario delle disponibilità non è ancora collegato al sistema di prenotazione. Indica la data preferita nel modulo: il nostro staff ti ricontatterà per confermarla.</p>
+                <a class="btn" id="btn-date-charter" asp-page="/Prenota" asp-route-tour="charter" asp-route-yacht="awave" asp-route-slot="mattina">Vai alla richiesta di prenotazione →</a>
             </section>
         </div>
 
@@ -188,7 +173,7 @@
                     <ul class="summary-list">
                         <li><strong>Yacht:</strong> <span id="summary-yacht">Awave 48 Luxury Open</span></li>
                         <li><strong>Fascia:</strong> <span id="summary-hours">10:00 – 14:00</span></li>
-                        <li><strong>Data:</strong> <span id="summary-date" style="color:var(--sea); font-weight:600;">Seleziona dal calendario</span></li>
+                        <li><strong>Data:</strong> <span>Da indicare nella richiesta</span></li>
                         <li><strong>Carburante:</strong> <span>Incluso nel raggio di Leuca</span></li>
                         <li><strong>Skipper:</strong> <span>Comandante a bordo incluso</span></li>
                     </ul>
@@ -198,11 +183,11 @@
                     </a>
 
                     <a class="btn wa block" id="btn-wa-charter" href="https://wa.me/393287451542?text=Buongiorno%2C%20vorrei%20prenotare%20il%20charter%20con%20Awave%2048." target="_blank" rel="noopener">
-                        💬 Chiedi disponibilità su WhatsApp
+                        Chiedi disponibilità su WhatsApp
                     </a>
 
                     <div style="margin-top:1.5rem; padding-top:1rem; border-top:1px solid var(--line); font-size:0.85rem; color:var(--muted);">
-                        ✨ <strong>Nessun intermediario:</strong> parli direttamente con i proprietari e comandanti delle imbarcazioni a Leuca.
+                        <strong>Nessun intermediario:</strong> parli direttamente con i proprietari e comandanti delle imbarcazioni a Leuca.
                     </div>
                 </div>
             </div>
@@ -227,11 +212,8 @@
     var summarySlotName = document.getElementById("summary-slot-name");
     var summaryYacht = document.getElementById("summary-yacht");
     var summaryHours = document.getElementById("summary-hours");
-    var summaryDate = document.getElementById("summary-date");
     var btnPrenota = document.getElementById("btn-prenota-charter");
     var btnWa = document.getElementById("btn-wa-charter");
-    var charterCalGrid = document.getElementById("charter-cal-grid");
-    var calYachtTitle = document.getElementById("cal-yacht-title");
 
     var currentYacht = {
         id: "awave",
@@ -249,8 +231,6 @@
         prezzo: 900
     };
 
-    var selectedDay = null;
-
     var yachtDescriptions = {
         "awave": "Design moderno, prendisole king-size a prua e poppa, plancetta idraulica affondabile per tuffi agevoli, impianto stereo Fusion con Bluetooth, bagno con box doccia e cabina relax.",
         "baia": "Iconico open sportivo con hard-top apribile, pozzetto immenso con divano semicircolare, due ampie cabine matrimoniali e cucina per pranzi a bordo.",
@@ -267,41 +247,11 @@
         summaryYacht.textContent = currentYacht.nome;
         summaryHours.textContent = currentSlot.orario;
 
-        var qData = selectedDay ? "&giorno=" + selectedDay : "";
-        btnPrenota.href = "/Prenota?tour=charter&yacht=" + currentYacht.id + "&slot=" + currentSlot.id + qData;
+        btnPrenota.href = "/Prenota?tour=charter&yacht=" + encodeURIComponent(currentYacht.id) + "&slot=" + encodeURIComponent(currentSlot.id);
+        document.getElementById("btn-date-charter").href = btnPrenota.href;
         
-        var msgWa = "Buongiorno, vorrei informazioni per il charter con lo yacht " + currentYacht.nome + " per la fascia " + currentSlot.orario + (selectedDay ? " in data " + selectedDay + " Luglio." : ".");
+        var msgWa = "Buongiorno, vorrei informazioni per il charter con lo yacht " + currentYacht.nome + " per la fascia " + currentSlot.orario + ".";
         btnWa.href = "https://wa.me/393287451542?text=" + encodeURIComponent(msgWa);
-    }
-
-    function renderCalendar() {
-        charterCalGrid.innerHTML = "";
-        calYachtTitle.textContent = "Disponibilità " + currentYacht.nome;
-
-        // Simulazione disponibilità specifica per yacht
-        for (var d = 1; d <= 31; d++) {
-            var card = document.createElement("button");
-            card.type = "button";
-            var status = (d % 6 === 0) ? "full" : ((d % 4 === 0) ? "limited" : "avail");
-            var stText = status === "full" ? "Occupato" : (status === "limited" ? "1 slot" : "Libero");
-            
-            card.className = "cal-day " + status + (selectedDay === d ? " selected" : "");
-            card.innerHTML = "<span class='day-num'>" + d + "</span><span class='day-status'>" + stText + "</span>";
-
-            if (status !== "full") {
-                (function(dayNum) {
-                    card.addEventListener("click", function() {
-                        selectedDay = dayNum;
-                        summaryDate.textContent = dayNum + " Luglio 2025";
-                        renderCalendar();
-                        updateSummary();
-                    });
-                })(d);
-            } else {
-                card.disabled = true;
-            }
-            charterCalGrid.appendChild(card);
-        }
     }
 
     yachtCards.forEach(function(card) {
@@ -324,7 +274,6 @@
             pricePomeriggio.textContent = "€ " + currentYacht.pomeriggio.toLocaleString("it-IT");
             priceFullday.textContent = "€ " + currentYacht.fullday.toLocaleString("it-IT");
 
-            renderCalendar();
             updateSummary();
         });
     });
@@ -342,7 +291,6 @@
         });
     });
 
-    renderCalendar();
     updateSummary();
 })();
 </script>

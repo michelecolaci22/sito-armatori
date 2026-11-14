@@ -2,7 +2,7 @@
 @model WebAppColax.Pages.Tour.GreciaModel
 @{
     ViewData["Title"] = "Tour in Grecia in Barca da Santa Maria di Leuca | Isole Diapontie";
-    ViewData["Description"] = "Minicrociera giornaliera da Santa Maria di Leuca alle isole greche di Othonoi (Fanò) e Mathraki. Itinerario completo, foto, orari e calendario disponibilità.";
+    ViewData["Description"] = "Minicrociera giornaliera da Santa Maria di Leuca alle isole greche di Othonoi (Fanò) e Mathraki. Itinerario, foto, orari e richiesta di disponibilità.";
 }
 
 <div class="wrap">
@@ -13,14 +13,14 @@
     <!-- Hero della Pagina Grecia -->
     <header class="tour-hero" style="background-image:linear-gradient(180deg, rgba(8,35,46,0.3) 0%, rgba(8,35,46,0.9) 100%), url('@Url.Content("~/img/servizi/grecia.jpg")');">
         <div class="tour-hero-content">
-            <span class="tour-badge">🇬🇷 Esperienza Esclusiva</span>
+            <span class="tour-badge">Esperienza esclusiva</span>
             <h1>Minicrociera alle Isole Greche</h1>
             <p class="tour-subtitle">Dalla punta estrema del Salento fino all'arcipelago delle Isole Diapontie: Othonoi (Fanò) e Mathraki. Una giornata indimenticabile nel blu dello Ionio.</p>
             <div class="tour-quick-facts">
-                <div><span>⏱️ Durata</span><strong>Full Day (08:30 – 19:30)</strong></div>
-                <div><span>⚓ Partenza</span><strong>Porto Turistico di Leuca</strong></div>
-                <div><span>💶 Quota</span><strong>Da € 180 / persona</strong></div>
-                <div><span>👥 Gruppo</span><strong>Max 10-12 passeggeri</strong></div>
+                <div><span>Durata</span><strong>Giornata intera · 08:30–19:30</strong></div>
+                <div><span>Partenza</span><strong>Porto Turistico di Leuca</strong></div>
+                <div><span>Quota</span><strong>Da € 180 a persona</strong></div>
+                <div><span>Gruppo</span><strong>Massimo 10–12 ospiti</strong></div>
             </div>
         </div>
     </header>
@@ -101,7 +101,7 @@
                 <h2>Cosa include la quota</h2>
                 <div class="includes-grid">
                     <div class="inc-box inc-yes">
-                        <h3>✅ Sempre Incluso</h3>
+                        <h3>Sempre incluso</h3>
                         <ul>
                             <li>Comandante professionista & marinaio a bordo</li>
                             <li>Carburante per l'intero tragitto A/R</li>
@@ -113,7 +113,7 @@
                         </ul>
                     </div>
                     <div class="inc-box inc-no">
-                        <h3>ℹ️ Non Incluso / Da Sapere</h3>
+                        <h3>Non incluso / da sapere</h3>
                         <ul>
                             <li>Pranzo nelle taverne greche (a scelta e a consumo dell'ospite)</li>
                             <li>Spese personali e souvenir a terra</li>
@@ -136,28 +136,10 @@
                 </div>
             </section>
 
-            <!-- Calendario Disponibilità Interattivo -->
             <section class="tour-section" id="calendario-grecia">
-                <h2>📅 Calendario Disponibilità e Date Partenze</h2>
-                <p class="lead">Le partenze per la Grecia sono confermate in base alle condizioni meteo-marine ottimali. Seleziona un giorno disponibile per bloccare il tuo posto:</p>
-
-                <div class="cal-widget">
-                    <div class="cal-header">
-                        <button type="button" class="btn sea" id="prev-month" style="padding:0.4rem 0.8rem;">← Mese prec.</button>
-                        <h3 id="cal-month-title" style="margin:0; font-size:1.3rem;">Luglio / Agosto 2025</h3>
-                        <button type="button" class="btn sea" id="next-month" style="padding:0.4rem 0.8rem;">Mese succ. →</button>
-                    </div>
-
-                    <div class="cal-legend">
-                        <span><i class="dot dot-avail"></i> Disponibile</span>
-                        <span><i class="dot dot-limited"></i> Ultimi 3 posti</span>
-                        <span><i class="dot dot-full"></i> Al completo</span>
-                    </div>
-
-                    <div class="cal-days-grid" id="cal-grid">
-                        <!-- Generato dinamicamente con date reali -->
-                    </div>
-                </div>
+                <h2>Indica la data che preferisci</h2>
+                <p class="lead">Le date e le condizioni del mare vengono confermate dal nostro staff. Invia una richiesta e ti ricontatteremo per verificare la disponibilità.</p>
+                <a class="btn" asp-page="/Prenota" asp-route-tour="grecia">Scegli la data e invia la richiesta →</a>
             </section>
         </div>
 
@@ -171,13 +153,8 @@
                 </div>
 
                 <div class="box-body">
-                    <div class="selected-date-preview" id="date-selected-banner" style="display:none;">
-                        <span>Data selezionata:</span>
-                        <strong id="date-selected-text">15 Luglio 2025</strong>
-                    </div>
-
                     <p style="font-size:0.9rem; color:var(--muted); margin-bottom:1.2rem;">
-                        Puoi prenotare singoli posti oppure richiedere l'intero yacht in esclusiva per il tuo gruppo.
+                        Invia una richiesta per i posti disponibili; ti ricontatteremo per confermare i dettagli.
                     </p>
 
                     <a class="btn" id="btn-prenota-grecia" asp-page="/Prenota" asp-route-tour="grecia" style="display:block; text-align:center; font-size:1.1rem; padding:0.9rem 1rem; margin-bottom:0.75rem;">
@@ -185,84 +162,14 @@
                     </a>
 
                     <a class="btn wa block" href="https://wa.me/393287451542?text=Buongiorno%2C%20vorrei%20informazioni%20e%20disponibilit%C3%A0%20per%20il%20Tour%20in%20Grecia." target="_blank" rel="noopener">
-                        💬 Chiedi info su WhatsApp
+                        Chiedi informazioni su WhatsApp
                     </a>
 
                     <div style="margin-top:1.5rem; padding-top:1rem; border-top:1px solid var(--line); font-size:0.85rem; color:var(--muted);">
-                        🔒 <strong>Cancellazione protetta:</strong> se il mare non permette la traversata in sicurezza, recupero in altra data o rimborso immediato del 100%.
+                        <strong>Cancellazione protetta:</strong> se il mare non permette la traversata in sicurezza, recupero in altra data o rimborso immediato del 100%.
                     </div>
                 </div>
             </div>
         </aside>
     </div>
 </div>
-
-@section Scripts {
-<script>
-(function() {
-    var calGrid = document.getElementById("cal-grid");
-    var dateSelectedBanner = document.getElementById("date-selected-banner");
-    var dateSelectedText = document.getElementById("date-selected-text");
-    var btnPrenota = document.getElementById("btn-prenota-grecia");
-
-    var days = [
-        { d: 1, status: "avail", text: "Disponibile" },
-        { d: 2, status: "avail", text: "Disponibile" },
-        { d: 3, status: "limited", text: "Ultimi 2 posti" },
-        { d: 4, status: "avail", text: "Disponibile" },
-        { d: 5, status: "full", text: "Completo" },
-        { d: 6, status: "avail", text: "Disponibile" },
-        { d: 7, status: "avail", text: "Disponibile" },
-        { d: 8, status: "avail", text: "Disponibile" },
-        { d: 9, status: "limited", text: "Ultimi posti" },
-        { d: 10, status: "avail", text: "Disponibile" },
-        { d: 11, status: "full", text: "Completo" },
-        { d: 12, status: "avail", text: "Disponibile" },
-        { d: 13, status: "avail", text: "Disponibile" },
-        { d: 14, status: "limited", text: "Ultimi 3 posti" },
-        { d: 15, status: "avail", text: "Disponibile" },
-        { d: 16, status: "avail", text: "Disponibile" },
-        { d: 17, status: "full", text: "Completo" },
-        { d: 18, status: "avail", text: "Disponibile" },
-        { d: 19, status: "avail", text: "Disponibile" },
-        { d: 20, status: "limited", text: "Ultimo posto" },
-        { d: 21, status: "avail", text: "Disponibile" },
-        { d: 22, status: "avail", text: "Disponibile" },
-        { d: 23, status: "full", text: "Completo" },
-        { d: 24, status: "avail", text: "Disponibile" },
-        { d: 25, status: "avail", text: "Disponibile" },
-        { d: 26, status: "avail", text: "Disponibile" },
-        { d: 27, status: "avail", text: "Disponibile" },
-        { d: 28, status: "limited", text: "Ultimi posti" },
-        { d: 29, status: "avail", text: "Disponibile" },
-        { d: 30, status: "avail", text: "Disponibile" },
-        { d: 31, status: "avail", text: "Disponibile" }
-    ];
-
-    days.forEach(function(item) {
-        var dayCard = document.createElement("button");
-        dayCard.type = "button";
-        dayCard.className = "cal-day " + item.status;
-        dayCard.innerHTML = "<span class='day-num'>" + item.d + "</span><span class='day-status'>" + item.text + "</span>";
-
-        if (item.status !== "full") {
-            dayCard.addEventListener("click", function() {
-                document.querySelectorAll(".cal-day").forEach(function(c) { c.classList.remove("selected"); });
-                dayCard.classList.add("selected");
-                
-                var dataStr = item.d + " Luglio (08:30 - 19:30)";
-                dateSelectedBanner.style.display = "block";
-                dateSelectedText.textContent = dataStr;
-                btnPrenota.href = "/Prenota?tour=grecia&giorno=" + item.d;
-                btnPrenota.textContent = "Continua per il " + item.d + " Luglio →";
-            });
-        } else {
-            dayCard.disabled = true;
-        }
-
-        calGrid.appendChild(dayCard);
-    });
-})();
-</script>
-}
-

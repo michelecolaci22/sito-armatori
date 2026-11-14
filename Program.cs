@@ -3,6 +3,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddSingleton<WebAppColax.Services.BarcheService>();
+builder.Services.AddSingleton<WebAppColax.Services.EmailSender>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
