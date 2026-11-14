@@ -1,0 +1,234 @@
+{
+  "predefiniti": {
+    "contatti": {
+      "whatsapp": "393287451542",
+      "telefono": "+39 328 745 1542",
+      "email": "info@armatorisalentini.it"
+    },
+    "descrizione": "Per questa imbarcazione sono disponibili foto e scheda tecnica aggiornate. Contattaci per maggiori dettagli, per programmare una visita a bordo o per conoscere le condizioni di vendita.",
+    "campiScheda": ["Larghezza", "Motori", "Ore motore", "Carburante", "Cabine", "Posti letto", "Bagni", "Località"],
+    "informazioniUtili": [
+      "Visite a bordo e prove in mare su appuntamento a Santa Maria di Leuca.",
+      "Documentazione nautica, perizie e fatture manutenzioni consultabili durante la visita.",
+      "Assistenza completa per pratiche navali, passaggio di proprietà, leasing e trasferimento barca.",
+      "Possibilità di posto barca presso il nostro ormeggio nel Porto Turistico di Leuca."
+    ],
+    "messaggioWhatsapp": "Buongiorno, ho visto sul vostro sito la barca {nome} ({anno}, {lunghezza}) e vorrei avere maggiori informazioni o concordare una visita. {link}",
+    "emailOggetto": "Richiesta informazioni imbarcazione: {nome}",
+    "emailCorpo": "Buongiorno,\n\nho visto sul vostro sito la barca {nome} ({anno}, {lunghezza}, {prezzo}) e vorrei ricevere maggiori informazioni o concordare una visita a bordo.\n\nScheda barca: {link}\n\nGrazie.\n\nNome e recapito telefonico: "
+  },
+  "barche": [
+    {
+      "slug": "awave-48",
+      "nome": "AWAVE 48",
+      "anno": "2022",
+      "lunghezza": "14.80 m",
+      "prezzo": "Trattativa riservata",
+      "inVendita": true,
+      "foto": [
+        "~/img/barche/barca-01.jpg",
+        "~/img/hero/hero-1.jpg",
+        "~/img/hero/hero-2.jpg"
+      ],
+      "descrizione": "Imbarcazione open di altissimo livello, unione perfetta tra eleganza italiana e prestazioni marine d'eccezione. Linee moderne e filanti, layout di coperta studiato per il massimo comfort con doppio prendisole, salotto pozzetto conviviale e plancia comandi ergonomica con strumentazione touch di ultima generazione. Interni luminosi con finiture di pregio, cabina armatoriale a tutto baglio, cabina ospiti doppia e dinette trasformabile. Sempre rimessata al coperto nei mesi invernali con manutenzioni ufficiali Volvo Penta documentate.",
+      "scheda": {
+        "Larghezza": "4.40 m",
+        "Motori": "2 x Volvo Penta IPS 650 (2x 480 CV)",
+        "Ore motore": "280 h",
+        "Carburante": "Diesel",
+        "Cabine": "2",
+        "Posti letto": "4 + 2",
+        "Bagni": "2 con box doccia",
+        "Località": "Santa Maria di Leuca (LE)",
+        "Serbatoio carburante": "1.400 L",
+        "Serbatoio acqua": "450 L",
+        "Velocità crociera": "26 nodi",
+        "Velocità massima": "34 nodi"
+      },
+      "dotazioni": [
+        "Joystick di manovra Volvo IPS",
+        "Aria condizionata caldo/freddo in tutti gli ambienti",
+        "Generatore Kohler 9 kW",
+        "Elica di prua",
+        "Passerella idraulica a scomparsa Besenzoni",
+        "Plancetta poppiera idraulica affondabile in teak",
+        "Pozzetto e passavanti in teak massello",
+        "GPS / Plotter Garmin 16\" touchscreen",
+        "Radar e autopilota Garmin",
+        "Impianto stereo Fusion Marine High-Performance con altoparlanti JL Audio",
+        "Dissalatore Schenker 60 l/h",
+        "Mobile bar pozzetto con grill, lavello e doppio frigo",
+        "Tendalino parasole con pali in carbonio",
+        "Verricello elettrico con ancora in inox e contametri catena",
+        "Inverter 2000W e caricabatterie elettronico"
+      ]
+    },
+    {
+      "slug": "baia-acqua-44",
+      "nome": "BAIA ACQUA 44",
+      "anno": "2008",
+      "lunghezza": "13.95 m",
+      "prezzo": "€ 500.000",
+      "inVendita": true,
+      "foto": [
+        "~/img/barche/barca-02.jpg",
+        "~/img/hero/hero-3.jpg",
+        "~/img/hero/hero-4.jpg"
+      ],
+      "descrizione": "Iconico open sportivo dei rinomati Cantieri di Baia, celebre per la tenuta di mare straordinaria e la velocità di crociera impeccabile. Barca tenuta con cura maniacale dall'armatore: carena a V profonda, pozzetto spaziosissimo con grande divano semicircolare e garage per tender idraulico. Interni raffinati con essenze in legno pregiato, cucina attrezzata con piano a induzione, salone accogliente e due ampie cabine matrimoniali con bagno en-suite. Pronta alla boa per la stagione estiva.",
+      "scheda": {
+        "Larghezza": "4.10 m",
+        "Motori": "2 x Yanmar 440 CV (Linea d'asse)",
+        "Ore motore": "620 h",
+        "Carburante": "Diesel",
+        "Cabine": "2",
+        "Posti letto": "4",
+        "Bagni": "2",
+        "Località": "Santa Maria di Leuca (LE)",
+        "Serbatoio carburante": "1.200 L",
+        "Serbatoio acqua": "400 L",
+        "Velocità crociera": "28 nodi",
+        "Velocità massima": "36 nodi"
+      },
+      "dotazioni": [
+        "Generatore Mase 7.5 kW",
+        "Aria condizionata reversibile in salone e cabine",
+        "Elica di prua",
+        "Garage per tender ad azionamento elettroidraulico",
+        "Passerella idraulica telescopica Besenzoni",
+        "Hard Top con tettuccio soft-top apribile elettricamente",
+        "Strumentazione elettronica Raymarine Axiom",
+        "Autopilota e tridata Raymarine",
+        "Impianto TV satellitare con Smart TV dinette",
+        "Cucina completa di piano a induzione, microonde e frigorifero",
+        "Frigorifero in pozzetto e fabbricatore di ghiaccio",
+        "Pozzetto e plancetta di poppa in teak massello",
+        "Cuscineria esterna completa a cellule chiuse (nuova 2023)",
+        "Luci subacquee a LED a poppa"
+      ]
+    },
+    {
+      "slug": "dc-11-fly",
+      "nome": "DC 11 FLY",
+      "anno": "1995",
+      "lunghezza": "11.50 m",
+      "prezzo": "€ 75.000",
+      "inVendita": true,
+      "foto": [
+        "~/img/barche/barca-03.jpg",
+        "~/img/servizi/charter.jpg"
+      ],
+      "descrizione": "Classico ed intramontabile Flybridge dei prestigiosi Cantieri Dellapasqua DC. Imbarcazione solida, marina e affidabile in qualsiasi condizione di mare, grazie alla leggendaria robustezza strutturale e alla motorizzazione Caterpillar sempre tagliandata con precisione. Spazi a bordo generosi sia nel salone che sul ponte Fly, ideale sia per lunghe crociere familiari che per uscite di pesca d'altura. Ottimo rapporto qualità/prezzo.",
+      "scheda": {
+        "Larghezza": "3.85 m",
+        "Motori": "2 x Caterpillar 3116 DITA (2x 380 CV - Linea d'asse)",
+        "Ore motore": "980 h",
+        "Carburante": "Diesel",
+        "Cabine": "2",
+        "Posti letto": "4 + 2",
+        "Bagni": "2",
+        "Località": "Santa Maria di Leuca (LE)",
+        "Serbatoio carburante": "950 L",
+        "Serbatoio acqua": "350 L",
+        "Velocità crociera": "22 nodi",
+        "Velocità massima": "28 nodi"
+      },
+      "dotazioni": [
+        "Doppia stazione di comando (plancia interna e Flybridge)",
+        "Passerella idraulica Besenzoni con funzione gruetta per tender",
+        "Generatore silenziato 3.5 kW",
+        "Ecoscandaglio professionale Furuno e GPS Plotter",
+        "Pilota automatico Robertson",
+        "VHF fisso con antenna amplificata",
+        "Flaps idraulici con indicatori digitali in plancia",
+        "Tendalino parasole sul Flybridge e chiusura camper completa del pozzetto",
+        "Cuscinerie esterne complete",
+        "Pozzetto rivestito in teak",
+        "Cucina separata con fuochi a gas e lavello inox",
+        "Verricello salpa-ancora Lofrans 1000W con doppi comandi"
+      ]
+    },
+    {
+      "slug": "cayman-400-wa",
+      "nome": "CAYMAN 400 WA",
+      "anno": "2021",
+      "lunghezza": "12.30 m",
+      "prezzo": "Trattativa riservata",
+      "inVendita": true,
+      "foto": [
+        "~/img/barche/barca-04.jpg",
+        "~/img/servizi/grotte.jpg"
+      ],
+      "descrizione": "Walkaround contemporaneo dalle prestazioni esaltanti e dal design accattivante. La circolazione di bordo sicura sui passavanti protetti e la presenza del T-Top strutturato garantiscono massima vivibilità e protezione solare. Ampi spazi solarium a prua e a poppa, dinette esterna con tavolo regolabile elettricamente per creare una seconda zona prendisole. Sottocoperta rifiniture moderne in rovere chiaro, grande cabina armatoriale e cabina ospiti con letti singoli trasformabili. Condizioni pari al nuovo.",
+      "scheda": {
+        "Larghezza": "3.82 m",
+        "Motori": "2 x Volvo Penta D6-380 EVC (2x 380 CV)",
+        "Ore motore": "195 h",
+        "Carburante": "Diesel",
+        "Cabine": "2",
+        "Posti letto": "4 + 1",
+        "Bagni": "1 con vano doccia separato",
+        "Località": "Santa Maria di Leuca (LE)",
+        "Serbatoio carburante": "1.000 L",
+        "Serbatoio acqua": "300 L",
+        "Velocità crociera": "27 nodi",
+        "Velocità massima": "35 nodi"
+      },
+      "dotazioni": [
+        "T-Top in carbonio con illuminazione LED integrata",
+        "Joystick di manovra con sistema Position Hold",
+        "Elica di prua",
+        "Display multifunzione Raymarine Axiom Pro 16\"",
+        "Impianto audio premium con subwoofer e connettività Bluetooth",
+        "Aria condizionata 16.000 BTU reversibile",
+        "Generatore Paguro 4 kW",
+        "Plancia di poppa maggiorata con finitura Seadek",
+        "Luci perimetrali di cortesia a LED su tutto il camminamento",
+        "Cucina esterna wet-bar con lavello, piastra a induzione e doppio frigo a cassetto",
+        "Inverter 1500W",
+        "Tenda privacy a poppa su pali in carbonio"
+      ]
+    },
+    {
+      "slug": "mano-marine-38-50",
+      "nome": "MANO MARINE 38.50",
+      "anno": "2007",
+      "lunghezza": "12.08 m",
+      "prezzo": "€ 110.000",
+      "inVendita": true,
+      "foto": [
+        "~/img/barche/barca-05.jpg",
+        "~/img/servizi/grecia.jpg"
+      ],
+      "descrizione": "Day cruiser e cabinato familiare tra i più riusciti del cantiere napoletano Manò Marine. Offre volumi interni ed esterni impareggiabili per la categoria: un pozzetto enorme con salottino conviviale a 'U', tavolo da pranzo in massello e prendisole poppiero. Cabina di prua matrimoniale indipendente con porta scorrevole, spaziosa cabina ospiti a poppa con letto matrimoniale in piano, bagno con doccia e dinette confortevole. Motori Volvo D4 affidabili ed estremamente parsimoniosi nei consumi di carburante. Tagliando motori e piedi poppieri eseguito con cura.",
+      "scheda": {
+        "Larghezza": "3.92 m",
+        "Motori": "2 x Volvo Penta D4-260 (2x 260 CV EFB)",
+        "Ore motore": "710 h",
+        "Carburante": "Diesel",
+        "Cabine": "2",
+        "Posti letto": "4 + 2",
+        "Bagni": "1 con doccia",
+        "Località": "Santa Maria di Leuca (LE)",
+        "Serbatoio carburante": "800 L",
+        "Serbatoio acqua": "250 L",
+        "Velocità crociera": "24 nodi",
+        "Velocità massima": "31 nodi"
+      },
+      "dotazioni": [
+        "Elica di prua con comando dedicato a joystick",
+        "GPS cartografico a colori Lowrance",
+        "Pilota automatico",
+        "VHF con antenna dedicata",
+        "Pozzetto e plancetta rivestiti in teak massello",
+        "Tendalino parasole con chiusura integrale camper",
+        "Cuscineria prendisole prua e poppa rifatta a nuovo",
+        "Mobile living in pozzetto con fornello a gas, lavello e frigo",
+        "Boiler per acqua calda bivalente (motore + 220V)",
+        "Doccetta di poppa calda e fredda",
+        "Caricabatterie elettronico con presa banchina",
+        "Salpa-ancora elettrico con doppi comandi e conta-metri"
+      ]
+    }
+  ]
+}

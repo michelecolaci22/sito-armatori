@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="~/img/mark.svg" />
+    <title>@ViewData["Title"] – Armatori Salentini</title>
+    <meta name="description" content="@(ViewData["Description"] ?? "Escursioni in barca da Santa Maria di Leuca: grotte, Grecia, charter e barche usate.")" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="it_IT" />
+    <meta property="og:title" content="@ViewData["Title"] – Armatori Salentini" />
+    <meta property="og:description" content="@(ViewData["Description"] ?? "Escursioni in barca da Santa Maria di Leuca.")" />
+    <script type="application/ld+json">
+    {
+      "@@context": "https://schema.org",
+      "@@type": "LocalBusiness",
+      "name": "Armatori Salentini",
+      "telephone": "+393287451542",
+      "description": "Escursioni in barca, tour delle grotte, minicrociere in Grecia, charter e vendita di barche usate a Santa Maria di Leuca.",
+      "address": { "@@type": "PostalAddress", "addressLocality": "Santa Maria di Leuca", "addressRegion": "LE", "addressCountry": "IT" },
+      "vatID": "IT05069050754"
+    }
+    </script>
+</head>
+<body class="@(ViewData["Cover"] != null ? "has-cover" : "")">
+    <a class="skip" href="#main">Vai al contenuto</a>
+    <header class="site-header">
+        <a class="logo" asp-page="/Index" aria-label="Armatori Salentini – Home"><img src="~/img/logo-compact.svg" alt="Armatori Salentini – Boat and Yacht Services" width="186" height="44" /></a>
+        <input type="checkbox" id="nav-toggle" class="nav-toggle" />
+        <label for="nav-toggle" class="burger">Menu</label>
+        <nav aria-label="Principale">
+            <a asp-page="/Tour/Grecia">Tour Grecia</a>
+            <a asp-page="/Tour/Charter">Charter Yacht</a>
+            <a asp-page="/BarcheUsate/Index">Barche usate</a>
+            <a asp-page="/Prenota" style="color:var(--sea); font-weight:700;">Prenota</a>
+            <a asp-page="/Contatti">Contatti</a>
+        </nav>
+    </header>
+
+    <main id="main">
+        @RenderBody()
+    </main>
+
+    <footer class="site-footer" id="contatti">
+        <div class="wrap">
+            <div>
+                <div style="background:rgba(255,255,255,0.95); display:inline-block; padding:0.4rem 0.8rem; border-radius:0.5rem; margin-bottom:0.9rem;">
+                    <img src="~/img/logo-compact.svg" alt="Armatori Salentini – Boat and Yacht Services" width="186" height="44" style="display:block;" />
+                </div><br />
+                Santa Maria di Leuca (LE)<br />
+                P.IVA 05069050754<br />
+                © @DateTime.Now.Year Armatori Salentini
+            </div>
+            <div>
+                Telefono: <a href="tel:+393287451542">+39 328 745 1542</a><br />
+                Email: <a href="mailto:info@@armatorisalentini.it">info@@armatorisalentini.it</a>
+            </div>
+            <div>
+                <a asp-page="/Privacy">Privacy policy</a><br />
+                <a asp-page="/Termini">Termini e condizioni</a>
+            </div>
+        </div>
+    </footer>
+    @await RenderSectionAsync("Scripts", required: false)
+    <script>
+    (function () {
+        var h = document.querySelector(".site-header");
+        function f() { h.classList.toggle("scrolled", window.scrollY > 40); }
+        f();
+        addEventListener("scroll", f, { passive: true });
+    })();
+    </script>
+</body>
+</html>

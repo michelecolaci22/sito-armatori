@@ -1,0 +1,268 @@
+@page "/tour-grecia"
+@model WebAppColax.Pages.Tour.GreciaModel
+@{
+    ViewData["Title"] = "Tour in Grecia in Barca da Santa Maria di Leuca | Isole Diapontie";
+    ViewData["Description"] = "Minicrociera giornaliera da Santa Maria di Leuca alle isole greche di Othonoi (Fanò) e Mathraki. Itinerario completo, foto, orari e calendario disponibilità.";
+}
+
+<div class="wrap">
+    <nav class="crumbs" aria-label="Percorso">
+        <a asp-page="/Index">Home</a> › <a asp-page="/Index" asp-fragment="tour">Tour</a> › Grecia (Isole Diapontie)
+    </nav>
+
+    <!-- Hero della Pagina Grecia -->
+    <header class="tour-hero" style="background-image:linear-gradient(180deg, rgba(8,35,46,0.3) 0%, rgba(8,35,46,0.9) 100%), url('@Url.Content("~/img/servizi/grecia.jpg")');">
+        <div class="tour-hero-content">
+            <span class="tour-badge">🇬🇷 Esperienza Esclusiva</span>
+            <h1>Minicrociera alle Isole Greche</h1>
+            <p class="tour-subtitle">Dalla punta estrema del Salento fino all'arcipelago delle Isole Diapontie: Othonoi (Fanò) e Mathraki. Una giornata indimenticabile nel blu dello Ionio.</p>
+            <div class="tour-quick-facts">
+                <div><span>⏱️ Durata</span><strong>Full Day (08:30 – 19:30)</strong></div>
+                <div><span>⚓ Partenza</span><strong>Porto Turistico di Leuca</strong></div>
+                <div><span>💶 Quota</span><strong>Da € 180 / persona</strong></div>
+                <div><span>👥 Gruppo</span><strong>Max 10-12 passeggeri</strong></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="tour-layout">
+        <!-- Colonna Principale: Informazioni, Itinerario e Galleria -->
+        <div class="tour-main">
+            
+            <!-- Descrizione Generale -->
+            <section class="tour-section">
+                <h2>Il fascino della Grecia a sole 43 miglia da Leuca</h2>
+                <p class="lead" style="margin-bottom:1rem;">
+                    Naviga attraverso il Canale d'Otranto verso le isole greche più vicine all'Italia. Un'avventura autentica alla scoperta di baie incontaminate, grotte marine raggiungibili solo dal mare e porticcioli tradizionali dove il tempo sembra essersi fermato.
+                </p>
+                <p>
+                    A bordo dei nostri yacht veloci e confortevoli, la traversata è un vero piacere: ampi spazi prendisole, zona living all'ombra, bevande fresche sempre disponibili e la sicurezza di due comandanti esperti per tutta la navigazione.
+                </p>
+            </section>
+
+            <!-- Itinerario Giornaliero Dettagliato -->
+            <section class="tour-section">
+                <h2>Programma e Itinerario della Giornata</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-time">08:30</div>
+                        <div class="timeline-body">
+                            <h3>Ritrovo e Imbarco al Porto di Leuca</h3>
+                            <p>Accoglienza a bordo, welcome coffee, briefing di sicurezza e controllo dei documenti d'identità validi per l'espatrio.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-time">09:00</div>
+                        <div class="timeline-body">
+                            <h3>Navigazione nel Canale d'Otranto</h3>
+                            <p>Partenza verso levante: spesso durante la traversata è possibile avvistare delfini che accompagnano la prua dello yacht.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-time">11:15</div>
+                        <div class="timeline-body">
+                            <h3>Arrivo a Othonoi (Fanò) e Baia di Calypso</h3>
+                            <p>Prima spettacolare sosta bagno nella celebre Baia di Calypso, con sabbia bianchissima e acque color smeraldo, sovrastata da imponenti falesie verticali.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-time">13:00</div>
+                        <div class="timeline-body">
+                            <h3>Ormeggio al Porticciolo di Ammos & Pranzo Greco</h3>
+                            <p>Sbarco nel caratteristico borgo di pescatori di Othonoi. Tempo libero per gustare le specialità tipiche elleniche (souvlaki, feta, insalata greca e pesce fresco) nelle taverne tipiche sul mare.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-time">15:30</div>
+                        <div class="timeline-body">
+                            <h3>Periplo dell'Isola e Rotta su Mathraki</h3>
+                            <p>Nuova navigazione tra le calette più isolate, tuffi dalla plancetta di poppa e snorkeling guidato con maschere fornite a bordo.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-time">17:30</div>
+                        <div class="timeline-body">
+                            <h3>Aperitivo al Tramonto in Navigazione</h3>
+                            <p>Rotta di rientro verso il Salento accompagnati da musica rilassante, bollicine di prosecco e taralli salentini al calar del sole.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-time">19:30</div>
+                        <div class="timeline-body">
+                            <h3>Rientro al Porto di Santa Maria di Leuca</h3>
+                            <p>Sbarco con saluti dell'equipaggio e fine dell'esperienza.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Cosa Include -->
+            <section class="tour-section">
+                <h2>Cosa include la quota</h2>
+                <div class="includes-grid">
+                    <div class="inc-box inc-yes">
+                        <h3>✅ Sempre Incluso</h3>
+                        <ul>
+                            <li>Comandante professionista & marinaio a bordo</li>
+                            <li>Carburante per l'intero tragitto A/R</li>
+                            <li>Aperitivo tipico e calice di prosecco di benvenuto</li>
+                            <li>Bibite analcoliche, acqua fresca e frutta di stagione</li>
+                            <li>Attrezzatura per lo snorkeling (maschere e boccagli)</li>
+                            <li>Teli mare e doccia d'acqua dolce a bordo</li>
+                            <li>Assicurazione passeggeri completa</li>
+                        </ul>
+                    </div>
+                    <div class="inc-box inc-no">
+                        <h3>ℹ️ Non Incluso / Da Sapere</h3>
+                        <ul>
+                            <li>Pranzo nelle taverne greche (a scelta e a consumo dell'ospite)</li>
+                            <li>Spese personali e souvenir a terra</li>
+                            <li><strong>Obbligatorio:</strong> Carta d'identità valida per l'espatrio o Passaporto</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Galleria Fotografica -->
+            <section class="tour-section">
+                <h2>Galleria Fotografica del Tour in Grecia</h2>
+                <div class="tour-gallery">
+                    <div class="t-gal-item" style="background-image:url('@Url.Content("~/img/servizi/grecia.jpg")')"></div>
+                    <div class="t-gal-item" style="background-image:url('@Url.Content("~/img/hero/hero-1.jpg")')"></div>
+                    <div class="t-gal-item" style="background-image:url('@Url.Content("~/img/hero/hero-3.jpg")')"></div>
+                    <div class="t-gal-item" style="background-image:url('@Url.Content("~/img/gallery/gallery-04.jpg")')"></div>
+                    <div class="t-gal-item" style="background-image:url('@Url.Content("~/img/gallery/gallery-06.jpg")')"></div>
+                    <div class="t-gal-item" style="background-image:url('@Url.Content("~/img/gallery/gallery-07.jpg")')"></div>
+                </div>
+            </section>
+
+            <!-- Calendario Disponibilità Interattivo -->
+            <section class="tour-section" id="calendario-grecia">
+                <h2>📅 Calendario Disponibilità e Date Partenze</h2>
+                <p class="lead">Le partenze per la Grecia sono confermate in base alle condizioni meteo-marine ottimali. Seleziona un giorno disponibile per bloccare il tuo posto:</p>
+
+                <div class="cal-widget">
+                    <div class="cal-header">
+                        <button type="button" class="btn sea" id="prev-month" style="padding:0.4rem 0.8rem;">← Mese prec.</button>
+                        <h3 id="cal-month-title" style="margin:0; font-size:1.3rem;">Luglio / Agosto 2025</h3>
+                        <button type="button" class="btn sea" id="next-month" style="padding:0.4rem 0.8rem;">Mese succ. →</button>
+                    </div>
+
+                    <div class="cal-legend">
+                        <span><i class="dot dot-avail"></i> Disponibile</span>
+                        <span><i class="dot dot-limited"></i> Ultimi 3 posti</span>
+                        <span><i class="dot dot-full"></i> Al completo</span>
+                    </div>
+
+                    <div class="cal-days-grid" id="cal-grid">
+                        <!-- Generato dinamicamente con date reali -->
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Colonna Laterale Fissa: Box Prenotazione Rapida -->
+        <aside class="tour-sidebar">
+            <div class="sticky-book-box">
+                <div class="box-head">
+                    <span class="price-from">Quota per persona</span>
+                    <div class="price-val">€ 180</div>
+                    <span class="price-sub">Include skipper, carburante e aperitivo</span>
+                </div>
+
+                <div class="box-body">
+                    <div class="selected-date-preview" id="date-selected-banner" style="display:none;">
+                        <span>Data selezionata:</span>
+                        <strong id="date-selected-text">15 Luglio 2025</strong>
+                    </div>
+
+                    <p style="font-size:0.9rem; color:var(--muted); margin-bottom:1.2rem;">
+                        Puoi prenotare singoli posti oppure richiedere l'intero yacht in esclusiva per il tuo gruppo.
+                    </p>
+
+                    <a class="btn" id="btn-prenota-grecia" asp-page="/Prenota" asp-route-tour="grecia" style="display:block; text-align:center; font-size:1.1rem; padding:0.9rem 1rem; margin-bottom:0.75rem;">
+                        Prenota questo Tour →
+                    </a>
+
+                    <a class="btn wa block" href="https://wa.me/393287451542?text=Buongiorno%2C%20vorrei%20informazioni%20e%20disponibilit%C3%A0%20per%20il%20Tour%20in%20Grecia." target="_blank" rel="noopener">
+                        💬 Chiedi info su WhatsApp
+                    </a>
+
+                    <div style="margin-top:1.5rem; padding-top:1rem; border-top:1px solid var(--line); font-size:0.85rem; color:var(--muted);">
+                        🔒 <strong>Cancellazione protetta:</strong> se il mare non permette la traversata in sicurezza, recupero in altra data o rimborso immediato del 100%.
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+(function() {
+    var calGrid = document.getElementById("cal-grid");
+    var dateSelectedBanner = document.getElementById("date-selected-banner");
+    var dateSelectedText = document.getElementById("date-selected-text");
+    var btnPrenota = document.getElementById("btn-prenota-grecia");
+
+    var days = [
+        { d: 1, status: "avail", text: "Disponibile" },
+        { d: 2, status: "avail", text: "Disponibile" },
+        { d: 3, status: "limited", text: "Ultimi 2 posti" },
+        { d: 4, status: "avail", text: "Disponibile" },
+        { d: 5, status: "full", text: "Completo" },
+        { d: 6, status: "avail", text: "Disponibile" },
+        { d: 7, status: "avail", text: "Disponibile" },
+        { d: 8, status: "avail", text: "Disponibile" },
+        { d: 9, status: "limited", text: "Ultimi posti" },
+        { d: 10, status: "avail", text: "Disponibile" },
+        { d: 11, status: "full", text: "Completo" },
+        { d: 12, status: "avail", text: "Disponibile" },
+        { d: 13, status: "avail", text: "Disponibile" },
+        { d: 14, status: "limited", text: "Ultimi 3 posti" },
+        { d: 15, status: "avail", text: "Disponibile" },
+        { d: 16, status: "avail", text: "Disponibile" },
+        { d: 17, status: "full", text: "Completo" },
+        { d: 18, status: "avail", text: "Disponibile" },
+        { d: 19, status: "avail", text: "Disponibile" },
+        { d: 20, status: "limited", text: "Ultimo posto" },
+        { d: 21, status: "avail", text: "Disponibile" },
+        { d: 22, status: "avail", text: "Disponibile" },
+        { d: 23, status: "full", text: "Completo" },
+        { d: 24, status: "avail", text: "Disponibile" },
+        { d: 25, status: "avail", text: "Disponibile" },
+        { d: 26, status: "avail", text: "Disponibile" },
+        { d: 27, status: "avail", text: "Disponibile" },
+        { d: 28, status: "limited", text: "Ultimi posti" },
+        { d: 29, status: "avail", text: "Disponibile" },
+        { d: 30, status: "avail", text: "Disponibile" },
+        { d: 31, status: "avail", text: "Disponibile" }
+    ];
+
+    days.forEach(function(item) {
+        var dayCard = document.createElement("button");
+        dayCard.type = "button";
+        dayCard.className = "cal-day " + item.status;
+        dayCard.innerHTML = "<span class='day-num'>" + item.d + "</span><span class='day-status'>" + item.text + "</span>";
+
+        if (item.status !== "full") {
+            dayCard.addEventListener("click", function() {
+                document.querySelectorAll(".cal-day").forEach(function(c) { c.classList.remove("selected"); });
+                dayCard.classList.add("selected");
+                
+                var dataStr = item.d + " Luglio (08:30 - 19:30)";
+                dateSelectedBanner.style.display = "block";
+                dateSelectedText.textContent = dataStr;
+                btnPrenota.href = "/Prenota?tour=grecia&giorno=" + item.d;
+                btnPrenota.textContent = "Continua per il " + item.d + " Luglio →";
+            });
+        } else {
+            dayCard.disabled = true;
+        }
+
+        calGrid.appendChild(dayCard);
+    });
+})();
+</script>
+}
+

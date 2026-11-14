@@ -1,0 +1,521 @@
+@page
+@model WebAppColax.Pages.PrenotaModel
+@{
+    ViewData["Title"] = "Prenotazione Tour e Charter Yacht a Santa Maria di Leuca";
+    ViewData["Description"] = "Prenota online la tua esperienza in mare a Santa Maria di Leuca: tour in Grecia, charter yacht esclusivo con scelta dell'imbarcazione o tour delle grotte. Orari 10-14, 14:30-18:30 e 10-18.";
+    
+    var minDate = DateTime.Today.ToString("yyyy-MM-dd");
+    var maxDate = DateTime.Today.AddMonths(12).ToString("yyyy-MM-dd");
+}
+
+<div class="wrap">
+    <section class="page-head" style="padding-bottom:1.5rem;">
+        <nav class="crumbs" aria-label="Percorso" style="padding-top:0;">
+            <a asp-page="/Index">Home</a> › Prenotazioni
+        </nav>
+        <h1>Prenota la tua Esperienza in Mare</h1>
+        <p class="lead">Scegli tra la minicrociera in Grecia, il noleggio esclusivo di uno dei nostri yacht o il tour delle grotte. Seleziona la data e la fascia oraria sul calendario per verificare la disponibilità in tempo reale.</p>
+    </section>
+
+    <!-- Banner Pagine Dedicate -->
+    <div class="dedicated-pages-banner">
+        <a asp-page="/Tour/Grecia" class="dp-link">
+            <span class="dp-icon">🇬🇷</span>
+            <div>
+                <strong>Pagina dedicata Tour in Grecia</strong>
+                <span>Itinerario, tappe, foto e programma completo →</span>
+            </div>
+        </a>
+        <a asp-page="/Tour/Charter" class="dp-link">
+            <span class="dp-icon">🛥️</span>
+            <div>
+                <strong>Pagina dedicata Charter Flotta Yacht</strong>
+                <span>Confronta tutti i modelli, specifiche e dotazioni →</span>
+            </div>
+        </a>
+    </div>
+
+    @if (Model.Esito == "ok")
+    {
+        <div class="note ok" role="status" style="margin-bottom:2rem; font-size:1.05rem;">
+            <strong>Richiesta inviata con successo!</strong><br />
+            Grazie per averci contattato. Ti abbiamo inviato una conferma riassuntiva a <strong>@Model.EmailInviata</strong> e il nostro comandante ti risponderà al più presto su WhatsApp o via email per bloccare l'imbarcazione.
+        </div>
+    }
+    else if (Model.Esito == "errore")
+    {
+        <div class="note err" role="alert" style="margin-bottom:2rem;">
+            Si è verificato un errore durante l'invio. Contattaci direttamente su WhatsApp al <a href="https://wa.me/393287451542">+39 328 745 1542</a> o telefonaci.
+        </div>
+    }
+
+    <form method="post" id="form-prenota" action="#form-prenota">
+        <div asp-validation-summary="ModelOnly" class="err-txt"></div>
+
+        <!-- Hidden inputs per il binding ASP.NET Core -->
+        <input type="hidden" asp-for="Input.TipoEsperienza" id="hidden-tipo-esperienza" />
+        <input type="hidden" asp-for="Input.YachtSelezionato" id="hidden-yacht" />
+        <input type="hidden" asp-for="Input.FasciaOraria" id="hidden-fascia-oraria" />
+        <input type="hidden" asp-for="Input.Data" id="hidden-data-input" />
+
+        <div class="booking-layout">
+            <!-- Colonna Sinistra: Configurazione Interattiva -->
+            <div class="booking-steps">
+
+                <!-- STEP 1: Scegli Esperienza -->
+                <div class="bstep-box">
+                    <div class="bstep-header">
+                        <span class="bstep-num">1</span>
+                        <h2>Scegli l'Esperienza</h2>
+                    </div>
+
+                    <div class="exp-selector-grid">
+                        <!-- Charter -->
+                        <div class="exp-card @(Model.Input.TipoEsperienza == "charter" ? "active" : "")" data-tipo="charter">
+                            <span class="exp-badge">Più Richiesto</span>
+                            <div class="exp-icon">🛥️</div>
+                            <h3>Charter Yacht Esclusivo</h3>
+                            <p>Yacht privato con skipper solo per te e i tuoi ospiti. Rotta personalizzata e aperitivo a bordo.</p>
+                            <span class="exp-price">Da € 500 a gruppo</span>
+                        </div>
+
+                        <!-- Grecia -->
+                        <div class="exp-card @(Model.Input.TipoEsperienza == "grecia" ? "active" : "")" data-tipo="grecia">
+                            <span class="exp-badge" style="background:#0b5c73;">Internazionale</span>
+                            <div class="exp-icon">🇬🇷</div>
+                            <h3>Tour in Grecia (Diapontie)</h3>
+                            <p>Giornata intera tra Fanò (Othonoi) e Mathraki. Baia di Calypso e pranzo nelle taverne greche.</p>
+                            <span class="exp-price">€ 180 a persona</span>
+                        </div>
+
+                        <!-- Grotte -->
+                        <div class="exp-card @(Model.Input.TipoEsperienza == "grotte" ? "active" : "")" data-tipo="grotte">
+                            <div class="exp-icon">🏖️</div>
+                            <h3>Tour Grotte di Leuca</h3>
+                            <p>Costa Ionica e Adriatica, soste bagno nelle calette più suggestive e tarallini con vino locale.</p>
+                            <span class="exp-price">Da € 35 a persona</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 2: Scegli Yacht (Visibile se Charter) -->
+                <div class="bstep-box" id="step-yacht-box" style="@(Model.Input.TipoEsperienza == "charter" ? "" : "display:none;")">
+                    <div class="bstep-header">
+                        <span class="bstep-num">2</span>
+                        <h2>Scegli lo Yacht della Flotta</h2>
+                    </div>
+                    <p style="color:var(--muted); margin-bottom:1rem; font-size:0.95rem;">
+                        Gestiamo diverse imbarcazioni con allestimenti, capienza e tariffe differenti. Scegli quella perfetta per il tuo gruppo:
+                    </p>
+
+                    <div class="yachts-inline-grid">
+                        <!-- Awave 48 -->
+                        <div class="y-inline-card @(Model.Input.YachtSelezionato == "awave" || string.IsNullOrEmpty(Model.Input.YachtSelezionato) ? "active" : "")" 
+                             data-yacht="awave" data-nome="Awave 48 Luxury Open" data-pax="10" data-mattina="900" data-pomeriggio="950" data-fullday="1500"
+                             data-img="@Url.Content("~/img/barche/barca-01.jpg")">
+                            <div class="yic-img" style="background-image:url('@Url.Content("~/img/barche/barca-01.jpg")');"></div>
+                            <div class="yic-body">
+                                <h4>Awave 48 Open</h4>
+                                <p>15m · Max 10 ospiti · Top lusso</p>
+                                <strong>Da € 900</strong>
+                            </div>
+                        </div>
+
+                        <!-- Baia 44 -->
+                        <div class="y-inline-card @(Model.Input.YachtSelezionato == "baia" ? "active" : "")" 
+                             data-yacht="baia" data-nome="Baia 44 Sport Cruiser" data-pax="10" data-mattina="750" data-pomeriggio="800" data-fullday="1300"
+                             data-img="@Url.Content("~/img/barche/barca-02.jpg")">
+                            <div class="yic-img" style="background-image:url('@Url.Content("~/img/barche/barca-02.jpg")');"></div>
+                            <div class="yic-body">
+                                <h4>Baia 44 Cruiser</h4>
+                                <p>14m · Max 10 ospiti · Hard-top</p>
+                                <strong>Da € 750</strong>
+                            </div>
+                        </div>
+
+                        <!-- Cayman 400 -->
+                        <div class="y-inline-card @(Model.Input.YachtSelezionato == "cayman" ? "active" : "")" 
+                             data-yacht="cayman" data-nome="Cayman 400 Walkaround" data-pax="8" data-mattina="600" data-pomeriggio="650" data-fullday="1050"
+                             data-img="@Url.Content("~/img/barche/barca-04.jpg")">
+                            <div class="yic-img" style="background-image:url('@Url.Content("~/img/barche/barca-04.jpg")');"></div>
+                            <div class="yic-body">
+                                <h4>Cayman 400 WA</h4>
+                                <p>12.5m · Max 8 ospiti · Sportivo</p>
+                                <strong>Da € 600</strong>
+                            </div>
+                        </div>
+
+                        <!-- DC 11 Fly -->
+                        <div class="y-inline-card @(Model.Input.YachtSelezionato == "dc11" ? "active" : "")" 
+                             data-yacht="dc11" data-nome="DC 11 Flybridge Classic" data-pax="10" data-mattina="500" data-pomeriggio="550" data-fullday="850"
+                             data-img="@Url.Content("~/img/barche/barca-03.jpg")">
+                            <div class="yic-img" style="background-image:url('@Url.Content("~/img/barche/barca-03.jpg")');"></div>
+                            <div class="yic-body">
+                                <h4>DC 11 Fly</h4>
+                                <p>12m · Max 10 ospiti · Fly panoramico</p>
+                                <strong>Da € 500</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 3: Scegli Fascia Oraria -->
+                <div class="bstep-box">
+                    <div class="bstep-header">
+                        <span class="bstep-num">3</span>
+                        <h2>Scegli la Fascia Oraria</h2>
+                    </div>
+                    <p style="color:var(--muted); margin-bottom:1rem; font-size:0.95rem;">
+                        Orari precisi e standardizzati per garantire la migliore esperienza in mare:
+                    </p>
+
+                    <div class="slots-inline-grid" id="slots-container">
+                        <!-- Mattina -->
+                        <div class="slot-pill @(Model.Input.FasciaOraria == "mattina" || string.IsNullOrEmpty(Model.Input.FasciaOraria) ? "active" : "")" 
+                             data-slot="mattina" data-orario="10:00 – 14:00" data-titolo="Mezza Giornata Mattina">
+                            <span class="sp-icon">🌅</span>
+                            <div class="sp-info">
+                                <strong>Mattina: 10:00 – 14:00</strong>
+                                <span>Mezza giornata con aperitivo e soste bagno rilassanti</span>
+                            </div>
+                            <span class="sp-price" id="pill-price-mattina">€ 900</span>
+                        </div>
+
+                        <!-- Pomeriggio -->
+                        <div class="slot-pill @(Model.Input.FasciaOraria == "pomeriggio" ? "active" : "")" 
+                             data-slot="pomeriggio" data-orario="14:30 – 18:30" data-titolo="Mezza Giornata Pomeriggio / Tramonto">
+                            <span class="sp-icon">🌇</span>
+                            <div class="sp-info">
+                                <strong>Pomeriggio: 14:30 – 18:30</strong>
+                                <span>Bagni al sole e calice di prosecco al tramonto</span>
+                            </div>
+                            <span class="sp-price" id="pill-price-pomeriggio">€ 950</span>
+                        </div>
+
+                        <!-- Full Day -->
+                        <div class="slot-pill @(Model.Input.FasciaOraria == "fullday" ? "active" : "")" 
+                             data-slot="fullday" data-orario="10:00 – 18:00" data-titolo="Full Day (Giornata Intera)">
+                            <span class="sp-icon">☀️</span>
+                            <div class="sp-info">
+                                <strong>Full Day: 10:00 – 18:00</strong>
+                                <span>8 ore esclusive: versante Ionico, Adriatico e pranzo in rada</span>
+                            </div>
+                            <span class="sp-price" id="pill-price-fullday">€ 1.500</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 4: Calendario Disponibilità -->
+                <div class="bstep-box">
+                    <div class="bstep-header">
+                        <span class="bstep-num">4</span>
+                        <h2>Verifica la Disponibilità sul Calendario</h2>
+                    </div>
+                    <p style="color:var(--muted); margin-bottom:1rem; font-size:0.95rem;">
+                        Tocca un giorno libero sul calendario per selezionare la data della tua uscita:
+                    </p>
+
+                    <div class="cal-widget">
+                        <div class="cal-header">
+                            <h3 id="cal-title-display" style="margin:0; font-size:1.2rem;">Luglio / Agosto 2025</h3>
+                            <div class="cal-legend">
+                                <span><i class="dot dot-avail"></i> Libero</span>
+                                <span><i class="dot dot-limited"></i> 1 disponibilità</span>
+                                <span><i class="dot dot-full"></i> Occupato</span>
+                            </div>
+                        </div>
+
+                        <div class="cal-days-grid" id="main-booking-cal">
+                            <!-- Popolato da JS -->
+                        </div>
+                    </div>
+
+                    <div style="margin-top:1.2rem; display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
+                        <label style="margin:0; font-weight:600; font-size:0.95rem;">Oppure imposta manualmente la data:</label>
+                        <input type="date" id="manual-date-picker" min="@minDate" max="@maxDate" 
+                               value="@(Model.Input.Data?.ToString("yyyy-MM-dd") ?? minDate)"
+                               style="padding:0.5rem 0.8rem; border:1.5px solid var(--line); border-radius:0.5rem; background:var(--bg); color:var(--ink); font:inherit;" />
+                    </div>
+                </div>
+
+                <!-- STEP 5: Dati di Contatto -->
+                <div class="bstep-box">
+                    <div class="bstep-header">
+                        <span class="bstep-num">5</span>
+                        <h2>I Tuoi Recapiti</h2>
+                    </div>
+
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1rem; margin-bottom:1rem;">
+                        <label>
+                            Nome e cognome *
+                            <input asp-for="Input.Nome" required placeholder="Mario Rossi" style="background:var(--bg);" />
+                            <span asp-validation-for="Input.Nome" class="err-txt"></span>
+                        </label>
+
+                        <label>
+                            Numero passeggeri previsti *
+                            <input asp-for="Input.Persone" type="number" min="1" max="20" required style="background:var(--bg);" id="input-persone" />
+                            <span asp-validation-for="Input.Persone" class="err-txt"></span>
+                        </label>
+                    </div>
+
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1rem; margin-bottom:1rem;">
+                        <label>
+                            Indirizzo Email *
+                            <input asp-for="Input.Email" type="email" required placeholder="mario.rossi@email.it" style="background:var(--bg);" />
+                            <span asp-validation-for="Input.Email" class="err-txt"></span>
+                        </label>
+
+                        <label>
+                            Telefono / WhatsApp *
+                            <input asp-for="Input.Telefono" type="tel" required placeholder="+39 333 1234567" style="background:var(--bg);" />
+                            <span asp-validation-for="Input.Telefono" class="err-txt"></span>
+                        </label>
+                    </div>
+
+                    <label style="margin-bottom:1rem;">
+                        Richieste particolari, ricorrenze o note (facoltativo)
+                        <textarea asp-for="Input.Note" rows="3" placeholder="Es. ricorrenza compleanno, richiesta aperitivo rinforzato con ostriche, bambini a bordo..." style="background:var(--bg);"></textarea>
+                    </label>
+
+                    <label class="check">
+                        <input asp-for="Input.Privacy" type="checkbox" required />
+                        <span>Accetto l'<a asp-page="/Privacy" target="_blank">informativa sulla privacy</a> e le <a asp-page="/Termini" target="_blank">condizioni del servizio</a>.</span>
+                    </label>
+                    <span asp-validation-for="Input.Privacy" class="err-txt"></span>
+
+                    <!-- Antispam bot trap -->
+                    <div class="hp" aria-hidden="true">
+                        <label>Non compilare
+                            <input asp-for="Website" tabindex="-1" autocomplete="off" />
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Colonna Destra: Riepilogo Preventivo Sticky -->
+            <aside class="booking-sidebar">
+                <div class="sticky-book-box">
+                    <div class="box-head">
+                        <span class="price-from">Preventivo Indicativo</span>
+                        <div class="price-val" id="sb-price-total">€ 900</div>
+                        <span class="price-sub" id="sb-price-sub">Include imbarcazione, skipper e aperitivo</span>
+                    </div>
+
+                    <div class="box-body">
+                        <ul class="summary-list">
+                            <li><strong>Esperienza:</strong> <span id="sb-exp-name">Charter Yacht Esclusivo</span></li>
+                            <li id="sb-yacht-row"><strong>Yacht:</strong> <span id="sb-yacht-name">Awave 48 Luxury Open</span></li>
+                            <li><strong>Fascia Oraria:</strong> <span id="sb-slot-time">10:00 – 14:00</span></li>
+                            <li><strong>Data Uscita:</strong> <strong id="sb-date-text" style="color:var(--sea);">Seleziona dal calendario</strong></li>
+                            <li><strong>Partenza:</strong> <span>Porto Turistico di Santa Maria di Leuca</span></li>
+                        </ul>
+
+                        <button type="submit" class="btn" style="width:100%; font-size:1.05rem; padding:0.95rem; margin-bottom:0.75rem; font-weight:600;">
+                            Invia Richiesta di Prenotazione
+                        </button>
+
+                        <a class="btn wa block" id="btn-wa-live" href="https://wa.me/393287451542" target="_blank" rel="noopener">
+                            💬 Chiedi conferma immediata su WhatsApp
+                        </a>
+
+                        <div style="margin-top:1.5rem; padding-top:1rem; border-top:1px solid var(--line); font-size:0.85rem; color:var(--muted); line-height:1.5;">
+                            🛡️ <strong>Garanzia Meteo Salento:</strong> In caso di mare mosso o vento sfavorevole, spostamento gratuito della data o rimborso totale garantito.
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+<script>
+(function() {
+    // Riferimenti elementi
+    var expCards = document.querySelectorAll(".exp-card");
+    var yachtCards = document.querySelectorAll(".y-inline-card");
+    var slotPills = document.querySelectorAll(".slot-pill");
+    var stepYachtBox = document.getElementById("step-yacht-box");
+    
+    var hiddenTipo = document.getElementById("hidden-tipo-esperienza");
+    var hiddenYacht = document.getElementById("hidden-yacht");
+    var hiddenFascia = document.getElementById("hidden-fascia-oraria");
+    var hiddenData = document.getElementById("hidden-data-input");
+    var manualDatePicker = document.getElementById("manual-date-picker");
+    var inputPersone = document.getElementById("input-persone");
+    
+    var sbPriceTotal = document.getElementById("sb-price-total");
+    var sbPriceSub = document.getElementById("sb-price-sub");
+    var sbExpName = document.getElementById("sb-exp-name");
+    var sbYachtRow = document.getElementById("sb-yacht-row");
+    var sbYachtName = document.getElementById("sb-yacht-name");
+    var sbSlotTime = document.getElementById("sb-slot-time");
+    var sbDateText = document.getElementById("sb-date-text");
+    var btnWaLive = document.getElementById("btn-wa-live");
+    
+    var pillPriceMattina = document.getElementById("pill-price-mattina");
+    var pillPricePomeriggio = document.getElementById("pill-price-pomeriggio");
+    var pillPriceFullday = document.getElementById("pill-price-fullday");
+    var mainBookingCal = document.getElementById("main-booking-cal");
+
+    // Dati flotta yacht
+    var yachtData = {
+        "awave": { nome: "Awave 48 Luxury Open", mattina: 900, pomeriggio: 950, fullday: 1500, maxPax: 10 },
+        "baia": { nome: "Baia 44 Sport Cruiser", mattina: 750, pomeriggio: 800, fullday: 1300, maxPax: 10 },
+        "cayman": { nome: "Cayman 400 Walkaround", mattina: 600, pomeriggio: 650, fullday: 1050, maxPax: 8 },
+        "dc11": { nome: "DC 11 Flybridge Classic", mattina: 500, pomeriggio: 550, fullday: 850, maxPax: 10 }
+    };
+
+    var state = {
+        tipo: hiddenTipo.value || "charter",
+        yacht: hiddenYacht.value || "awave",
+        slot: hiddenFascia.value || "mattina",
+        data: manualDatePicker.value || "",
+        giornoSel: null
+    };
+
+    function updateView() {
+        hiddenTipo.value = state.tipo;
+        hiddenYacht.value = state.yacht;
+        hiddenFascia.value = state.slot;
+        hiddenData.value = state.data;
+
+        // Visualizzazione step yacht
+        if (state.tipo === "charter") {
+            stepYachtBox.style.display = "";
+            sbYachtRow.style.display = "";
+            sbExpName.textContent = "Charter Yacht Esclusivo";
+            var yObj = yachtData[state.yacht] || yachtData["awave"];
+            sbYachtName.textContent = yObj.nome;
+
+            // Aggiorna prezzi sulle pillole slot
+            pillPriceMattina.textContent = "€ " + yObj.mattina.toLocaleString("it-IT");
+            pillPricePomeriggio.textContent = "€ " + yObj.pomeriggio.toLocaleString("it-IT");
+            pillPriceFullday.textContent = "€ " + yObj.fullday.toLocaleString("it-IT");
+
+            // Calcolo prezzo
+            var p = state.slot === "mattina" ? yObj.mattina :
+                    (state.slot === "pomeriggio" ? yObj.pomeriggio : yObj.fullday);
+            sbPriceTotal.textContent = "€ " + p.toLocaleString("it-IT");
+            sbPriceSub.textContent = "Tariffa totale yacht per il tuo gruppo";
+
+            var slotOrari = {
+                "mattina": "10:00 – 14:00",
+                "pomeriggio": "14:30 – 18:30",
+                "fullday": "10:00 – 18:00"
+            };
+            sbSlotTime.textContent = slotOrari[state.slot] || "10:00 – 14:00";
+        } 
+        else if (state.tipo === "grecia") {
+            stepYachtBox.style.display = "none";
+            sbYachtRow.style.display = "none";
+            sbExpName.textContent = "Tour in Grecia (Isole Diapontie)";
+            sbSlotTime.textContent = "Full Day: 08:30 – 19:30";
+            
+            var nPax = parseInt(inputPersone.value, 10) || 2;
+            var totG = nPax * 180;
+            sbPriceTotal.textContent = "€ " + totG.toLocaleString("it-IT");
+            sbPriceSub.textContent = "€ 180 a persona (include carburante, aperitivo e skipper)";
+        } 
+        else if (state.tipo === "grotte") {
+            stepYachtBox.style.display = "none";
+            sbYachtRow.style.display = "none";
+            sbExpName.textContent = "Tour Grotte di Leuca";
+            sbSlotTime.textContent = state.slot === "pomeriggio" ? "14:30 – 18:00" : "10:00 – 13:30";
+            
+            var nPaxG = parseInt(inputPersone.value, 10) || 2;
+            var totGr = nPaxG * 35;
+            sbPriceTotal.textContent = "€ " + totGr.toLocaleString("it-IT");
+            sbPriceSub.textContent = "Da € 35 a persona con aperitivo a bordo";
+        }
+
+        if (state.data) {
+            sbDateText.textContent = state.data;
+        } else {
+            sbDateText.textContent = "Seleziona dal calendario";
+        }
+
+        // WhatsApp link
+        var waMsg = "Buongiorno, vorrei prenotare: " + sbExpName.textContent + 
+                    (state.tipo === "charter" ? " (" + sbYachtName.textContent + ")" : "") +
+                    " per l'orario " + sbSlotTime.textContent +
+                    (state.data ? " in data " + state.data : "") +
+                    " per " + inputPersone.value + " persone.";
+        btnWaLive.href = "https://wa.me/393287451542?text=" + encodeURIComponent(waMsg);
+    }
+
+    function renderCalendar() {
+        mainBookingCal.innerHTML = "";
+        for (var d = 1; d <= 31; d++) {
+            var b = document.createElement("button");
+            b.type = "button";
+            var status = (d % 7 === 0) ? "full" : ((d % 5 === 0) ? "limited" : "avail");
+            var stTxt = status === "full" ? "Pieno" : (status === "limited" ? "1 rimasto" : "Libero");
+            b.className = "cal-day " + status + (state.giornoSel === d ? " selected" : "");
+            b.innerHTML = "<span class='day-num'>" + d + "</span><span class='day-status'>" + stTxt + "</span>";
+
+            if (status !== "full") {
+                (function(dayNum) {
+                    b.addEventListener("click", function() {
+                        state.giornoSel = dayNum;
+                        var now = new Date();
+                        var y = now.getFullYear();
+                        var m = String(now.getMonth() + 1).padStart(2, '0');
+                        var dStr = String(dayNum).padStart(2, '0');
+                        state.data = y + "-" + m + "-" + dStr;
+                        manualDatePicker.value = state.data;
+                        renderCalendar();
+                        updateView();
+                    });
+                })(d);
+            } else {
+                b.disabled = true;
+            }
+            mainBookingCal.appendChild(b);
+        }
+    }
+
+    // Event listeners
+    expCards.forEach(function(card) {
+        card.addEventListener("click", function() {
+            expCards.forEach(function(c) { c.classList.remove("active"); });
+            card.classList.add("active");
+            state.tipo = card.dataset.tipo;
+            updateView();
+        });
+    });
+
+    yachtCards.forEach(function(card) {
+        card.addEventListener("click", function() {
+            yachtCards.forEach(function(c) { c.classList.remove("active"); });
+            card.classList.add("active");
+            state.yacht = card.dataset.yacht;
+            updateView();
+        });
+    });
+
+    slotPills.forEach(function(pill) {
+        pill.addEventListener("click", function() {
+            slotPills.forEach(function(p) { p.classList.remove("active"); });
+            pill.classList.add("active");
+            state.slot = pill.dataset.slot;
+            updateView();
+        });
+    });
+
+    manualDatePicker.addEventListener("change", function() {
+        state.data = manualDatePicker.value;
+        state.giornoSel = null;
+        renderCalendar();
+        updateView();
+    });
+
+    inputPersone.addEventListener("input", updateView);
+
+    renderCalendar();
+    updateView();
+})();
+</script>
+}

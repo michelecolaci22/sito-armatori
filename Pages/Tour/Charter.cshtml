@@ -1,0 +1,350 @@
+@page "/charter-yacht"
+@model WebAppColax.Pages.Tour.CharterModel
+@{
+    ViewData["Title"] = "Noleggio e Charter Yacht con Skipper a Santa Maria di Leuca";
+    ViewData["Description"] = "Scegli il tuo yacht privato per una giornata esclusiva a Santa Maria di Leuca. Confronta la nostra flotta, prezzi per mezza giornata (10-14, 14:30-18:30) o full day (10-18) e verifica la disponibilità.";
+}
+
+<div class="wrap">
+    <nav class="crumbs" aria-label="Percorso">
+        <a asp-page="/Index">Home</a> › <a asp-page="/Index" asp-fragment="tour">Tour</a> › Charter Yacht Esclusivo
+    </nav>
+
+    <!-- Hero Charter -->
+    <header class="tour-hero" style="background-image:linear-gradient(180deg, rgba(8,35,46,0.3) 0%, rgba(8,35,46,0.9) 100%), url('@Url.Content("~/img/servizi/charter.jpg")');">
+        <div class="tour-hero-content">
+            <span class="tour-badge">🛥️ Noleggio con Comandante</span>
+            <h1>Charter Yacht Privato a Leuca</h1>
+            <p class="tour-subtitle">Uno yacht a tua completa disposizione per scoprire le coste del Salento o navigare in totale privacy. Scegli l'imbarcazione della nostra flotta più adatta alle tue esigenze.</p>
+            <div class="tour-quick-facts">
+                <div><span>⚓ Rotta</span><strong>Ionico o Adriatico a scelta</strong></div>
+                <div><span>👨‍✈️ Servizio</span><strong>Skipper e aperitivo inclusi</strong></div>
+                <div><span>🕒 Orari fissi</span><strong>10-14 | 14:30-18:30 | 10-18</strong></div>
+                <div><span>🍾 Extra</span><strong>Catering & champagne su richiesta</strong></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="tour-layout">
+        <!-- Colonna Principale: Scelta Yacht, Dettagli, Orari e Calendario -->
+        <div class="tour-main">
+            
+            <!-- Step 1: Scelta dello Yacht -->
+            <section class="tour-section">
+                <h2>1. Seleziona il tuo Yacht</h2>
+                <p class="lead">Gestiamo direttamente più imbarcazioni con allestimenti, dimensioni e prezzi differenti. Clicca su uno yacht per visualizzare foto, specifiche e calendario:</p>
+
+                <div class="yacht-picker-grid" id="yacht-picker">
+                    <!-- Yacht 1 -->
+                    <div class="yacht-card active" data-yacht="awave" data-nome="Awave 48 Luxury Open" data-pax="10" data-lun="15 m" 
+                         data-mattina="900" data-pomeriggio="950" data-fullday="1500" data-foto="@Url.Content("~/img/barche/barca-01.jpg")">
+                        <div class="yc-badge">Top di Gamma</div>
+                        <div class="yc-img" style="background-image:url('@Url.Content("~/img/barche/barca-01.jpg")');"></div>
+                        <div class="yc-body">
+                            <h3>Awave 48 Luxury Open</h3>
+                            <p class="yc-meta">15 metri · Max 10 ospiti · 2 cabine</p>
+                            <div class="yc-prices">
+                                <span>Da <strong>€ 900</strong> mezza giornata</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Yacht 2 -->
+                    <div class="yacht-card" data-yacht="baia" data-nome="Baia 44 Sport Cruiser" data-pax="10" data-lun="14 m" 
+                         data-mattina="750" data-pomeriggio="800" data-fullday="1300" data-foto="@Url.Content("~/img/barche/barca-02.jpg")">
+                        <div class="yc-img" style="background-image:url('@Url.Content("~/img/barche/barca-02.jpg")');"></div>
+                        <div class="yc-body">
+                            <h3>Baia 44 Sport Cruiser</h3>
+                            <p class="yc-meta">14 metri · Max 10 ospiti · Hard-top</p>
+                            <div class="yc-prices">
+                                <span>Da <strong>€ 750</strong> mezza giornata</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Yacht 3 -->
+                    <div class="yacht-card" data-yacht="cayman" data-nome="Cayman 400 Walkaround" data-pax="8" data-lun="12.5 m" 
+                         data-mattina="600" data-pomeriggio="650" data-fullday="1050" data-foto="@Url.Content("~/img/barche/barca-04.jpg")">
+                        <div class="yc-img" style="background-image:url('@Url.Content("~/img/barche/barca-04.jpg")');"></div>
+                        <div class="yc-body">
+                            <h3>Cayman 400 Walkaround</h3>
+                            <p class="yc-meta">12.5 metri · Max 8 ospiti · T-Top Carbonio</p>
+                            <div class="yc-prices">
+                                <span>Da <strong>€ 600</strong> mezza giornata</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Yacht 4 -->
+                    <div class="yacht-card" data-yacht="dc11" data-nome="DC 11 Flybridge Classic" data-pax="10" data-lun="12 m" 
+                         data-mattina="500" data-pomeriggio="550" data-fullday="850" data-foto="@Url.Content("~/img/barche/barca-03.jpg")">
+                        <div class="yc-img" style="background-image:url('@Url.Content("~/img/barche/barca-03.jpg")');"></div>
+                        <div class="yc-body">
+                            <h3>DC 11 Flybridge Classic</h3>
+                            <p class="yc-meta">12 metri · Max 10 ospiti · Ponte Fly panoramico</p>
+                            <div class="yc-prices">
+                                <span>Da <strong>€ 500</strong> mezza giornata</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Scheda Dettagliata dello Yacht Selezionato -->
+            <section class="tour-section" id="yacht-detail-section">
+                <div class="pbox" style="display:grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items:center;">
+                    <div class="bmain" id="yacht-active-img" style="background-image:url('@Url.Content("~/img/barche/barca-01.jpg")'); aspect-ratio:16/10;"></div>
+                    <div>
+                        <h3 id="yacht-active-name" style="font-size:1.6rem; margin-bottom:0.4rem;">Awave 48 Luxury Open</h3>
+                        <p id="yacht-active-desc" style="color:var(--muted); margin-bottom:1rem; font-size:0.95rem;">
+                            Design moderno, prendisole king-size a prua e poppa, plancetta idraulica affondabile per tuffi agevoli, impianto stereo Fusion con Bluetooth, bagno con box doccia e cabina relax.
+                        </p>
+                        <ul class="chk" style="display:grid; grid-template-columns:1fr; gap:0.4rem; font-size:0.9rem;" id="yacht-active-features">
+                            <li>Comandante e marinaio a bordo dedicato</li>
+                            <li>Prendisole matrimoniale a poppa e prua</li>
+                            <li>Aperitivo tipico salentino & prosecco inclusi</li>
+                            <li>Doccetta calda/fredda, teli mare e snorkeling</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 2: Fasce Orarie Fisse e Trasparenti -->
+            <section class="tour-section">
+                <h2>2. Scegli la Fascia Oraria</h2>
+                <p class="lead">Tutti i nostri noleggi seguono orari standard precisi per garantirti il massimo del relax in mare:</p>
+
+                <div class="slots-grid" id="slots-grid">
+                    <!-- Slot 1 -->
+                    <div class="slot-card active" data-slot="mattina" data-title="Mezza Giornata (Mattina)" data-orario="10:00 – 14:00">
+                        <div class="slot-badge">Mattina</div>
+                        <div class="slot-time">10:00 – 14:00</div>
+                        <h4>Mezza Giornata Mattutina</h4>
+                        <p>Ideale per il primo bagno della giornata nelle grotte prima dell'affollamento estivo, con aperitivo salentino a bordo.</p>
+                        <div class="slot-price-row">
+                            <span>Tariffa totale:</span>
+                            <strong class="slot-price-val" id="price-mattina">€ 900</strong>
+                        </div>
+                    </div>
+
+                    <!-- Slot 2 -->
+                    <div class="slot-card" data-slot="pomeriggio" data-title="Mezza Giornata (Pomeriggio / Tramonto)" data-orario="14:30 – 18:30">
+                        <div class="slot-badge" style="background:#e67e22;">Pomeriggio / Tramonto</div>
+                        <div class="slot-time">14:30 – 18:30</div>
+                        <h4>Mezza Giornata Pomeriggio</h4>
+                        <p>Pomeriggio di bagni e relax prolungato fino al calar del sole, con calice di bollicine per brindare al tramonto sullo Ionio.</p>
+                        <div class="slot-price-row">
+                            <span>Tariffa totale:</span>
+                            <strong class="slot-price-val" id="price-pomeriggio">€ 950</strong>
+                        </div>
+                    </div>
+
+                    <!-- Slot 3 -->
+                    <div class="slot-card" data-slot="fullday" data-title="Full Day (Giornata Intera)" data-orario="10:00 – 18:00">
+                        <div class="slot-badge" style="background:#27ae60;">Esperienza Completa</div>
+                        <div class="slot-time">10:00 – 18:00</div>
+                        <h4>Full Day (Giornata Intera)</h4>
+                        <p>8 ore di navigazione esclusiva: tempo per visitare sia il versante di Ponente che di Levante, soste prolungate e pranzo a bordo o sosta al ristorante.</p>
+                        <div class="slot-price-row">
+                            <span>Tariffa totale:</span>
+                            <strong class="slot-price-val" id="price-fullday">€ 1.500</strong>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 3: Calendario Disponibilità Yacht Selezionato -->
+            <section class="tour-section" id="calendario-charter">
+                <h2>3. Calendario Disponibilità Yacht</h2>
+                <p class="lead">Disponibilità in tempo reale per lo yacht selezionato. Clicca sul giorno per bloccare la data:</p>
+
+                <div class="cal-widget">
+                    <div class="cal-header">
+                        <h3 id="cal-yacht-title" style="margin:0; font-size:1.3rem;">Disponibilità Awave 48</h3>
+                        <div class="cal-legend">
+                            <span><i class="dot dot-avail"></i> Libero</span>
+                            <span><i class="dot dot-limited"></i> Solo 1 slot rimasto</span>
+                            <span><i class="dot dot-full"></i> Occupato</span>
+                        </div>
+                    </div>
+
+                    <div class="cal-days-grid" id="charter-cal-grid">
+                        <!-- Popolato dinamicamente da JS -->
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Colonna Laterale Fissa: Riepilogo & Prenotazione -->
+        <aside class="tour-sidebar">
+            <div class="sticky-book-box">
+                <div class="box-head">
+                    <span class="price-from">Riepilogo Noleggio</span>
+                    <div class="price-val" id="summary-price">€ 900</div>
+                    <span class="price-sub" id="summary-slot-name">Mezza Giornata (10:00 – 14:00)</span>
+                </div>
+
+                <div class="box-body">
+                    <ul class="summary-list">
+                        <li><strong>Yacht:</strong> <span id="summary-yacht">Awave 48 Luxury Open</span></li>
+                        <li><strong>Fascia:</strong> <span id="summary-hours">10:00 – 14:00</span></li>
+                        <li><strong>Data:</strong> <span id="summary-date" style="color:var(--sea); font-weight:600;">Seleziona dal calendario</span></li>
+                        <li><strong>Carburante:</strong> <span>Incluso nel raggio di Leuca</span></li>
+                        <li><strong>Skipper:</strong> <span>Comandante a bordo incluso</span></li>
+                    </ul>
+
+                    <a class="btn" id="btn-prenota-charter" asp-page="/Prenota" asp-route-tour="charter" style="display:block; text-align:center; font-size:1.05rem; padding:0.9rem 1rem; margin-bottom:0.75rem;">
+                        Procedi con la Prenotazione →
+                    </a>
+
+                    <a class="btn wa block" id="btn-wa-charter" href="https://wa.me/393287451542?text=Buongiorno%2C%20vorrei%20prenotare%20il%20charter%20con%20Awave%2048." target="_blank" rel="noopener">
+                        💬 Chiedi disponibilità su WhatsApp
+                    </a>
+
+                    <div style="margin-top:1.5rem; padding-top:1rem; border-top:1px solid var(--line); font-size:0.85rem; color:var(--muted);">
+                        ✨ <strong>Nessun intermediario:</strong> parli direttamente con i proprietari e comandanti delle imbarcazioni a Leuca.
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+(function() {
+    var yachtCards = document.querySelectorAll(".yacht-card");
+    var slotCards = document.querySelectorAll(".slot-card");
+    var yachtActiveImg = document.getElementById("yacht-active-img");
+    var yachtActiveName = document.getElementById("yacht-active-name");
+    var yachtActiveDesc = document.getElementById("yacht-active-desc");
+    
+    var priceMattina = document.getElementById("price-mattina");
+    var pricePomeriggio = document.getElementById("price-pomeriggio");
+    var priceFullday = document.getElementById("price-fullday");
+    
+    var summaryPrice = document.getElementById("summary-price");
+    var summarySlotName = document.getElementById("summary-slot-name");
+    var summaryYacht = document.getElementById("summary-yacht");
+    var summaryHours = document.getElementById("summary-hours");
+    var summaryDate = document.getElementById("summary-date");
+    var btnPrenota = document.getElementById("btn-prenota-charter");
+    var btnWa = document.getElementById("btn-wa-charter");
+    var charterCalGrid = document.getElementById("charter-cal-grid");
+    var calYachtTitle = document.getElementById("cal-yacht-title");
+
+    var currentYacht = {
+        id: "awave",
+        nome: "Awave 48 Luxury Open",
+        mattina: 900,
+        pomeriggio: 950,
+        fullday: 1500,
+        foto: yachtActiveImg.style.backgroundImage
+    };
+
+    var currentSlot = {
+        id: "mattina",
+        titolo: "Mezza Giornata (10:00 – 14:00)",
+        orario: "10:00 – 14:00",
+        prezzo: 900
+    };
+
+    var selectedDay = null;
+
+    var yachtDescriptions = {
+        "awave": "Design moderno, prendisole king-size a prua e poppa, plancetta idraulica affondabile per tuffi agevoli, impianto stereo Fusion con Bluetooth, bagno con box doccia e cabina relax.",
+        "baia": "Iconico open sportivo con hard-top apribile, pozzetto immenso con divano semicircolare, due ampie cabine matrimoniali e cucina per pranzi a bordo.",
+        "cayman": "Walkaround di ultima generazione con passavanti sicuri e T-Top in carbonio. Vivibilità totale all'aperto con dinette esterna, bar e doppio frigo.",
+        "dc11": "Classico flybridge spazioso e stabile, ideale per famiglie con bambini. Secondo ponte di comando panoramico ombreggiato con vista a 360° sul mare."
+    };
+
+    function updateSummary() {
+        var p = currentSlot.id === "mattina" ? currentYacht.mattina :
+                (currentSlot.id === "pomeriggio" ? currentYacht.pomeriggio : currentYacht.fullday);
+
+        summaryPrice.textContent = "€ " + p.toLocaleString("it-IT");
+        summarySlotName.textContent = currentSlot.titolo;
+        summaryYacht.textContent = currentYacht.nome;
+        summaryHours.textContent = currentSlot.orario;
+
+        var qData = selectedDay ? "&giorno=" + selectedDay : "";
+        btnPrenota.href = "/Prenota?tour=charter&yacht=" + currentYacht.id + "&slot=" + currentSlot.id + qData;
+        
+        var msgWa = "Buongiorno, vorrei informazioni per il charter con lo yacht " + currentYacht.nome + " per la fascia " + currentSlot.orario + (selectedDay ? " in data " + selectedDay + " Luglio." : ".");
+        btnWa.href = "https://wa.me/393287451542?text=" + encodeURIComponent(msgWa);
+    }
+
+    function renderCalendar() {
+        charterCalGrid.innerHTML = "";
+        calYachtTitle.textContent = "Disponibilità " + currentYacht.nome;
+
+        // Simulazione disponibilità specifica per yacht
+        for (var d = 1; d <= 31; d++) {
+            var card = document.createElement("button");
+            card.type = "button";
+            var status = (d % 6 === 0) ? "full" : ((d % 4 === 0) ? "limited" : "avail");
+            var stText = status === "full" ? "Occupato" : (status === "limited" ? "1 slot" : "Libero");
+            
+            card.className = "cal-day " + status + (selectedDay === d ? " selected" : "");
+            card.innerHTML = "<span class='day-num'>" + d + "</span><span class='day-status'>" + stText + "</span>";
+
+            if (status !== "full") {
+                (function(dayNum) {
+                    card.addEventListener("click", function() {
+                        selectedDay = dayNum;
+                        summaryDate.textContent = dayNum + " Luglio 2025";
+                        renderCalendar();
+                        updateSummary();
+                    });
+                })(d);
+            } else {
+                card.disabled = true;
+            }
+            charterCalGrid.appendChild(card);
+        }
+    }
+
+    yachtCards.forEach(function(card) {
+        card.addEventListener("click", function() {
+            yachtCards.forEach(function(c) { c.classList.remove("active"); });
+            card.classList.add("active");
+
+            currentYacht.id = card.dataset.yacht;
+            currentYacht.nome = card.dataset.nome;
+            currentYacht.mattina = parseInt(card.dataset.mattina, 10);
+            currentYacht.pomeriggio = parseInt(card.dataset.pomeriggio, 10);
+            currentYacht.fullday = parseInt(card.dataset.fullday, 10);
+            currentYacht.foto = card.dataset.foto;
+
+            yachtActiveImg.style.backgroundImage = "url('" + currentYacht.foto + "')";
+            yachtActiveName.textContent = currentYacht.nome;
+            yachtActiveDesc.textContent = yachtDescriptions[currentYacht.id] || "";
+
+            priceMattina.textContent = "€ " + currentYacht.mattina.toLocaleString("it-IT");
+            pricePomeriggio.textContent = "€ " + currentYacht.pomeriggio.toLocaleString("it-IT");
+            priceFullday.textContent = "€ " + currentYacht.fullday.toLocaleString("it-IT");
+
+            renderCalendar();
+            updateSummary();
+        });
+    });
+
+    slotCards.forEach(function(card) {
+        card.addEventListener("click", function() {
+            slotCards.forEach(function(c) { c.classList.remove("active"); });
+            card.classList.add("active");
+
+            currentSlot.id = card.dataset.slot;
+            currentSlot.titolo = card.dataset.title;
+            currentSlot.orario = card.dataset.orario;
+
+            updateSummary();
+        });
+    });
+
+    renderCalendar();
+    updateSummary();
+})();
+</script>
+}
+

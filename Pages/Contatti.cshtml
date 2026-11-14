@@ -1,0 +1,113 @@
+@page
+@model WebAppColax.Pages.ContattiModel
+@{
+    ViewData["Title"] = "Contatti";
+    ViewData["Description"] = "Contatta Armatori Salentini a Santa Maria di Leuca: telefono, email, modulo di contatto e posizione sulla mappa.";
+
+    // Dati di contatto (telefono e orari: profilo TripAdvisor e sito attuale)
+    var telefono = "+39 328 745 1542";
+    var telefonoLink = "+393287451542";
+    var email = "info@armatorisalentini.it";   // DA CONFERMARE: indirizzo non verificato online
+    var orari = "9:00 – 19:00";                // DA CONFERMARE: giorni di apertura
+    var mapsPlace = "https://www.google.com/maps/place/Armatori+Salentini/@39.8010209,18.3576818,15z";
+    var mapsRoute = "https://www.google.com/maps/dir/?api=1&destination=39.8010209,18.3576818";
+    var mapsEmbed = "https://maps.google.com/maps?q=Armatori%20Salentini%2C%20Santa%20Maria%20di%20Leuca&t=m&z=16&output=embed&iwloc=near";
+}
+
+<div class="wrap">
+    <section class="page-head">
+        <h1>Contatti</h1>
+        <p class="lead">Scrivici o chiamaci per prenotare un'escursione, chiedere un preventivo o avere informazioni sulle barche usate.</p>
+    </section>
+
+    <div class="contact-grid">
+        <div>
+            <ul class="clist">
+                <li><span class="k">Telefono</span><a class="v" href="tel:@telefonoLink">@telefono</a></li>
+                <li><span class="k">Email</span><a class="v" href="mailto:@email">@email</a></li>
+                <li><span class="k">Dove siamo</span><span class="v">Porto di Santa Maria di Leuca<br />73040 Castrignano del Capo (LE)</span></li>
+                <li><span class="k">Orari</span><span class="v">@orari</span></li>
+            </ul>
+            <div class="btns">
+                <a class="btn" href="tel:@telefonoLink">Chiama ora</a>
+                <a class="btn sea" href="@mapsRoute" target="_blank" rel="noopener">Come arrivare</a>
+            </div>
+        </div>
+
+        <div class="cform" id="modulo">
+            @if (Model.Esito == "ok")
+            {
+                <p class="note ok" role="status">Grazie! Abbiamo ricevuto il tuo messaggio e ti risponderemo il prima possibile.</p>
+            }
+            else if (Model.Esito == "errore")
+            {
+                <p class="note err" role="alert">Non siamo riusciti a inviare il messaggio. Chiamaci al @telefono oppure scrivici a @email.</p>
+            }
+
+            <form method="post" class="form" action="#modulo">
+                <div asp-validation-summary="ModelOnly" class="err-txt"></div>
+                <label>Nome e cognome
+                    <input asp-for="Input.Nome" autocomplete="name" required maxlength="100" />
+                    <span asp-validation-for="Input.Nome" class="err-txt"></span>
+                </label>
+                <label>Email
+                    <input asp-for="Input.Email" type="email" autocomplete="email" required maxlength="150" />
+                    <span asp-validation-for="Input.Email" class="err-txt"></span>
+                </label>
+                <label>Telefono (facoltativo)
+                    <input asp-for="Input.Telefono" type="tel" autocomplete="tel" maxlength="30" />
+                    <span asp-validation-for="Input.Telefono" class="err-txt"></span>
+                </label>
+                <label>Di cosa hai bisogno?
+                    <select asp-for="Input.Argomento" required>
+                        <option value="">Seleziona</option>
+                        @foreach (var a in ContattiModel.Argomenti)
+                        {
+                            <option value="@a">@a</option>
+                        }
+                    </select>
+                    <span asp-validation-for="Input.Argomento" class="err-txt"></span>
+                </label>
+                <label>Messaggio
+                    <textarea asp-for="Input.Messaggio" rows="5" required minlength="10" maxlength="2000"></textarea>
+                    <span asp-validation-for="Input.Messaggio" class="err-txt"></span>
+                </label>
+                <label class="check">
+                    <input asp-for="Input.Privacy" type="checkbox" required />
+                    <span>Ho letto la <a asp-page="/Privacy">privacy policy</a> e acconsento al trattamento dei miei dati per rispondere alla richiesta.</span>
+                </label>
+                <span asp-validation-for="Input.Privacy" class="err-txt"></span>
+                <div class="hp" aria-hidden="true">
+                    <label>Non compilare questo campo
+                        <input asp-for="Website" tabindex="-1" autocomplete="off" />
+                    </label>
+                </div>
+                <button class="btn" type="submit">Invia messaggio</button>
+            </form>
+        </div>
+    </div>
+
+    <section class="map-sec">
+        <h2>Dove siamo</h2>
+        <p class="lead">Ci trovi al porto di Santa Maria di Leuca. La mappa si carica solo se la richiedi, per rispettare la tua privacy.</p>
+        <div class="map-box" id="map-box" data-src="@mapsEmbed">
+            <button type="button" class="btn" id="map-load">Mostra la mappa</button>
+        </div>
+        <p><a href="@mapsPlace" target="_blank" rel="noopener">Apri su Google Maps →</a></p>
+    </section>
+</div>
+
+@section Scripts {
+<script>
+document.getElementById("map-load").addEventListener("click", function () {
+  var box = document.getElementById("map-box");
+  var f = document.createElement("iframe");
+  f.src = box.dataset.src;
+  f.title = "Mappa: Armatori Salentini a Santa Maria di Leuca";
+  f.loading = "lazy";
+  f.referrerPolicy = "no-referrer-when-downgrade";
+  f.allowFullscreen = true;
+  box.replaceChildren(f);
+});
+</script>
+}

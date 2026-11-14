@@ -1,0 +1,189 @@
+@page "/barche-usate"
+@inject WebAppColax.Services.BarcheService Servizio
+@{
+    ViewData["Title"] = "Barche usate in vendita a Santa Maria di Leuca";
+    ViewData["Description"] = "Catalogo imbarcazioni usate selezionate e garantite a Santa Maria di Leuca: yacht open, flybridge e walkaround. Schede tecniche complete, foto e contatti.";
+    var barche = Servizio.InVendita.ToList();
+}
+
+<div class="wrap">
+    <section class="page-head">
+        <nav class="crumbs" aria-label="Percorso" style="padding-top:0;">
+            <a asp-page="/Index">Home</a> › Barche usate
+        </nav>
+        <h1>Imbarcazioni Usate in Vendita</h1>
+        <p class="lead">Yacht a motore, flybridge e open selezionati e periziati dai nostri comandanti a Santa Maria di Leuca. Tutte le imbarcazioni sono visionabili su appuntamento.</p>
+    </section>
+
+    <!-- Filtri e barra di ricerca interattiva -->
+    <div class="pbox" style="margin-bottom: 2.5rem; padding: 1.5rem 1.8rem;">
+        <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap: 1rem;">
+            <div style="flex: 1 1 280px; position:relative;">
+                <label for="cerca-barca" style="font-size:0.85rem; font-weight:600; color:var(--muted); display:block; margin-bottom:0.35rem;">Cerca per modello o cantiere:</label>
+                <input type="search" id="cerca-barca" placeholder="Es. Baia, Dellapasqua, Cayman, Open..." 
+                       style="width:100%; padding: 0.65rem 0.9rem; border: 1.5px solid var(--line); border-radius: 0.5rem; background:var(--bg); font:inherit; color:var(--ink);" />
+            </div>
+            <div style="display:flex; gap:0.6rem; flex-wrap:wrap; align-items:flex-end;">
+                <div>
+                    <label for="filtro-prezzo" style="font-size:0.85rem; font-weight:600; color:var(--muted); display:block; margin-bottom:0.35rem;">Fascia di prezzo:</label>
+                    <select id="filtro-prezzo" style="padding: 0.65rem 0.9rem; border: 1.5px solid var(--line); border-radius: 0.5rem; background:var(--bg); font:inherit; color:var(--ink);">
+                        <option value="all">Tutti i prezzi</option>
+                        <option value="under100">Fino a € 100.000</option>
+                        <option value="100to500">Da € 100.000 a € 500.000</option>
+                        <option value="riservata">Trattativa riservata</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (barche.Count == 0)
+    {
+        <div class="note ok">
+            Al momento non ci sono imbarcazioni in catalogo. <a asp-page="/Contatti">Contattaci</a> per conoscere le prossime disponibilità in arrivo.
+        </div>
+    }
+    else
+    {
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1.25rem;">
+            <p class="bcount" id="count-label" style="margin:0; font-weight:500;">
+                @(barche.Count == 1 ? "1 imbarcazione disponibile" : $"{barche.Count} imbarcazioni disponibili")
+            </p>
+            <span style="font-size:0.85rem; color:var(--muted);">Ormeggiate a Santa Maria di Leuca</span>
+        </div>
+
+        <div class="bgrid" id="barche-grid">
+            @foreach (var b in barche)
+            {
+                var foto = b.Foto.FirstOrDefault() ?? "~/img/barche/nessuna.jpg";
+                var motori = b.Scheda.TryGetValue("Motori", out var mVal) ? mVal : "";
+                var cabine = b.Scheda.TryGetValue("Cabine", out var cVal) ? cVal : "";
+
+                // Estrazione numerica prezzo per filtro JS
+                var prezzoVal = "0";
+                if (b.Prezzo.Contains("500.000")) { prezzoVal = "500000"; }
+                else if (b.Prezzo.Contains("110.000")) { prezzoVal = "110000"; }
+                else if (b.Prezzo.Contains("75.000")) { prezzoVal = "75000"; }
+                else { prezzoVal = "riservata"; }
+
+                <article class="bcard card-barca" data-nome="@b.Nome.ToLowerInvariant()" data-anno="@b.Anno" data-prezzo-cat="@prezzoVal">
+                    <a asp-page="/BarcheUsate/Dettaglio" asp-route-slug="@b.Slug" tabindex="-1" aria-hidden="true" style="text-decoration:none;">
+                        <div class="bimg" style="background-image:url('@Url.Content(foto)'),linear-gradient(160deg,#1a6f86,#0b2f3b); position:relative;">
+                            <span style="position:absolute; top:0.75rem; right:0.75rem; background:rgba(8,35,46,0.85); color:#fff; font-size:0.8rem; font-weight:600; padding:0.25rem 0.6rem; border-radius:0.4rem; backdrop-filter:blur(4px);">
+                                @b.Anno
+                            </span>
+                        </div>
+                    </a>
+                    <div class="bbody">
+                        <h3 style="margin-bottom:0.3rem;"><a asp-page="/BarcheUsate/Dettaglio" asp-route-slug="@b.Slug" style="text-decoration:none; color:inherit;">@b.Nome</a></h3>
+                        <p class="bmeta" style="margin-bottom:0.75rem;">
+                            <strong>@b.Lunghezza</strong> 
+                            @if (!string.IsNullOrWhiteSpace(cabine))
+                            {
+                                <span>· @cabine cabine</span>
+                            }
+                            @if (!string.IsNullOrWhiteSpace(motori))
+                            {
+                                <span style="display:block; font-size:0.85rem; color:var(--muted); margin-top:0.2rem; text-overflow:ellipsis; overflow:hidden; white-space:nowrap;" title="@motori">
+                                    ⚓ @motori
+                                </span>
+                            }
+                        </p>
+                        <p class="price" style="font-size:1.35rem; color:var(--ink); margin-bottom:1rem;">@b.Prezzo</p>
+                        
+                        <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+                            <a class="btn sea" asp-page="/BarcheUsate/Dettaglio" asp-route-slug="@b.Slug" style="flex:1; text-align:center; padding:0.6rem 0.8rem; font-size:0.95rem;">
+                                Scheda tecnica <span aria-hidden="true">→</span>
+                            </a>
+                            <a class="btn wa" href="https://wa.me/393287451542?text=Buongiorno%2C%20vorrei%20informazioni%20sulla%20barca%20@Uri.EscapeDataString(b.Nome)%20in%20vendita." 
+                               target="_blank" rel="noopener" style="padding:0.6rem 0.8rem; font-size:0.95rem;" title="Chiedi su WhatsApp">
+                                💬
+                            </a>
+                        </div>
+                    </div>
+                </article>
+            }
+        </div>
+        
+        <p id="no-results" class="note" style="display:none;">
+            Nessuna imbarcazione corrisponde ai filtri selezionati. Prova a modificare la ricerca o <a asp-page="/Contatti">contattaci direttamente</a>.
+        </p>
+    }
+
+    <!-- Sezione Vendita / Brokerage -->
+    <section class="pbox" style="margin-top: 3rem; background:linear-gradient(170deg, #0b5c73 0%, #08232e 100%); color:#fff; border:0;">
+        <div style="display:grid; grid-template-columns: 1.2fr 0.8fr; gap:2rem; align-items:center;">
+            <div>
+                <h2 style="color:#fff; margin-bottom:0.6rem; font-size:clamp(1.6rem,3.5vw,2.2rem);">Vuoi vendere la tua imbarcazione?</h2>
+                <p style="color:#dcecf0; margin-bottom:1.5rem; font-size:1.05rem;">
+                    Affidati alla nostra rete di contatti in Salento e in tutto il Mediterraneo. Valutazione professionale, servizio fotografico dedicato, visibilità sul nostro portale e gestione delle visite a Leuca.
+                </p>
+                <div class="btns">
+                    <a class="btn" asp-page="/Contatti" style="color:#1c1204;">Affidaci la vendita</a>
+                    <a class="btn ghost" href="tel:+393287451542" style="border-color:rgba(255,255,255,0.4);">Parla con il nostro broker</a>
+                </div>
+            </div>
+            <div style="background:rgba(255,255,255,0.08); padding:1.5rem; border-radius:1rem; border:1px solid rgba(255,255,255,0.15);">
+                <h3 style="font-size:1.2rem; color:var(--sun); margin-bottom:0.75rem;">I vantaggi con Armatori Salentini</h3>
+                <ul class="chk" style="display:flex; flex-direction:column; gap:0.5rem; margin:0; font-size:0.95rem;">
+                    <li style="color:#f4f8f8;">Perizia tecnica preventiva dello stato d'uso</li>
+                    <li style="color:#f4f8f8;">Posto barca transitorio per facilitare le visite</li>
+                    <li style="color:#f4f8f8;">Assistenza contrattuale e passaggio di proprietà</li>
+                    <li style="color:#f4f8f8;">Gestione completa delle prove in mare</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+</div>
+
+@section Scripts {
+<script>
+(function() {
+    var searchInput = document.getElementById("cerca-barca");
+    var priceFilter = document.getElementById("filtro-prezzo");
+    var cards = document.querySelectorAll(".card-barca");
+    var countLabel = document.getElementById("count-label");
+    var noResults = document.getElementById("no-results");
+
+    function filtra() {
+        var term = searchInput.value.toLowerCase().trim();
+        var price = priceFilter.value;
+        var visibili = 0;
+
+        cards.forEach(function(card) {
+            var nome = card.dataset.nome || "";
+            var anno = card.dataset.anno || "";
+            var pCat = card.dataset.prezzoCat;
+
+            var matchSearch = !term || nome.indexOf(term) !== -1 || anno.indexOf(term) !== -1;
+            var matchPrice = true;
+
+            if (price === "under100") {
+                matchPrice = (pCat === "75000");
+            } else if (price === "100to500") {
+                matchPrice = (pCat === "110000" || pCat === "500000");
+            } else if (price === "riservata") {
+                matchPrice = (pCat === "riservata");
+            }
+
+            if (matchSearch && matchPrice) {
+                card.style.display = "";
+                visibili++;
+            } else {
+                card.style.display = "none";
+            }
+        });
+
+        if (countLabel) {
+            countLabel.textContent = visibili === 1 ? "1 imbarcazione trovata" : visibili + " imbarcazioni trovate";
+        }
+        if (noResults) {
+            noResults.style.display = visibili === 0 ? "block" : "none";
+        }
+    }
+
+    if (searchInput) searchInput.addEventListener("input", filtra);
+    if (priceFilter) priceFilter.addEventListener("change", filtra);
+})();
+</script>
+}

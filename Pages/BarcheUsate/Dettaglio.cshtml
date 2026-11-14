@@ -1,0 +1,173 @@
+@page "/barche-usate/{slug}"
+@model WebAppColax.Pages.BarcheUsate.DettaglioModel
+@{
+    var b = Model.Barca;
+    ViewData["Title"] = $"{b.Nome} – Barca usata in vendita a Santa Maria di Leuca";
+    ViewData["Description"] = $"{b.Nome}, anno {b.Anno}, lunghezza {b.Lunghezza}. Prezzo: {b.Prezzo}. Imbarcazione usata ormeggiata a Santa Maria di Leuca.";
+    var copertina = Model.Foto.FirstOrDefault() ?? "~/img/barche/nessuna.jpg";
+}
+
+<div class="wrap">
+    <nav class="crumbs" aria-label="Percorso">
+        <a asp-page="/Index">Home</a> › <a asp-page="/BarcheUsate/Index">Barche usate</a> › @b.Nome
+    </nav>
+
+    <div class="bdet">
+        <!-- Galleria Immagini -->
+        <div class="bgal">
+            <div class="bmain" id="bmain" role="img" aria-label="@b.Nome"
+                 style="background-image:url('@Url.Content(copertina)'),linear-gradient(160deg,#1a6f86,#0b2f3b)"></div>
+            @if (Model.Foto.Count > 1)
+            {
+                <div class="bthumbs">
+                    @for (var i = 0; i < Model.Foto.Count; i++)
+                    {
+                        <button type="button" data-src="@Url.Content(Model.Foto[i])" aria-label="Foto @(i + 1) di @b.Nome"
+                                aria-current="@(i == 0 ? "true" : "false")"
+                                style="background-image:url('@Url.Content(Model.Foto[i])')"></button>
+                    }
+                </div>
+            }
+        </div>
+
+        <!-- Colonna Laterale: Prezzo & Contatti -->
+        <aside class="bside">
+            <div>
+                <span style="display:inline-block; font-size:0.85rem; font-weight:600; text-transform:uppercase; letter-spacing:0.05em; color:var(--sea); margin-bottom:0.25rem;">
+                    In vendita a Leuca
+                </span>
+                <h1 style="font-size:clamp(1.9rem,3.5vw,2.5rem);">@b.Nome</h1>
+                <p class="bmeta" style="font-size:1.1rem; color:var(--muted); margin:0.3rem 0 0.6rem;">
+                    Anno @b.Anno · Lunghezza @b.Lunghezza
+                </p>
+                <p class="bprice" style="font-size:1.85rem; color:var(--ink);">@b.Prezzo</p>
+            </div>
+
+            <div class="binfo">
+                <h2>Ti interessa questa barca?</h2>
+                <p>Contattaci direttamente: il nostro comandante è a disposizione per concordare una visita a bordo e prova in mare a Leuca.</p>
+                
+                <a class="btn wa block" href="@Model.WhatsAppUrl" target="_blank" rel="noopener">
+                    💬 Scrivici su WhatsApp
+                </a>
+                <a class="btn sea block" href="@Model.MailtoUrl">
+                    ✉️ Invia richiesta via Email
+                </a>
+                
+                <p style="text-align:center; margin-top:0.5rem; font-size:0.9rem;">
+                    Oppure telefona al <a href="tel:@Model.TelefonoLink" style="font-weight:600;">@Model.TelefonoTesto</a>
+                </p>
+            </div>
+
+            <div style="background:var(--bg); border:1px solid var(--line); border-radius:1rem; padding:1.2rem; font-size:0.9rem;">
+                <p style="margin:0; color:var(--muted);">
+                    📍 <strong>Ormeggio:</strong> Porto di Santa Maria di Leuca (LE)<br />
+                    🛠️ <strong>Stato:</strong> Periziata e pronta per la stagione<br />
+                    📑 <strong>Documenti:</strong> Consultabili durante la visita
+                </p>
+            </div>
+        </aside>
+
+        <!-- Sezioni Dettaglio Barca -->
+        <div class="bsecs">
+            <section class="bsec">
+                <h2>Descrizione dell'imbarcazione</h2>
+                <p style="font-size:1.05rem; line-height:1.7;">@Model.Descrizione</p>
+            </section>
+
+            @if (Model.Scheda.Count > 0)
+            {
+                <section class="bsec">
+                    <h2>Scheda tecnica</h2>
+                    <dl class="spec">
+                        @foreach (var (etichetta, valore) in Model.Scheda)
+                        {
+                            <dt>@etichetta</dt>
+                            <dd>@valore</dd>
+                        }
+                    </dl>
+                </section>
+            }
+
+            @if (Model.Dotazioni.Count > 0)
+            {
+                <section class="bsec">
+                    <h2>Dotazioni & Accessori</h2>
+                    <ul class="chk">
+                        @foreach (var x in Model.Dotazioni)
+                        {
+                            <li>@x</li>
+                        }
+                    </ul>
+                </section>
+            }
+
+            @if (Model.InfoUtili.Count > 0)
+            {
+                <section class="bsec">
+                    <h2>Informazioni utili e servizi inclusi</h2>
+                    <ul class="chk">
+                        @foreach (var x in Model.InfoUtili)
+                        {
+                            <li>@x</li>
+                        }
+                    </ul>
+                </section>
+            }
+
+            <div style="margin-top:2.5rem; display:flex; gap:1rem; flex-wrap:wrap;">
+                <a class="btn" asp-page="/BarcheUsate/Index">← Torna al catalogo completo</a>
+                <a class="btn sea" href="@Model.WhatsAppUrl" target="_blank" rel="noopener">Prenota una visita a Leuca</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Altre barche in vendita -->
+    @if (Model.AltreBarche.Any())
+    {
+        <section style="margin-top:4rem; padding-top:2.5rem; border-top:1px solid var(--line);">
+            <div class="sec-head">
+                <div>
+                    <h2>Altre imbarcazioni in vendita</h2>
+                    <p class="lead">Scopri le altre proposte disponibili nel nostro ormeggio.</p>
+                </div>
+                <a class="btn" asp-page="/BarcheUsate/Index">Vedi tutte</a>
+            </div>
+
+            <div class="bgrid">
+                @foreach (var altra in Model.AltreBarche)
+                {
+                    var altraFoto = altra.Foto.FirstOrDefault() ?? "~/img/barche/nessuna.jpg";
+                    <article class="bcard">
+                        <a asp-page="/BarcheUsate/Dettaglio" asp-route-slug="@altra.Slug" tabindex="-1" aria-hidden="true">
+                            <div class="bimg" style="background-image:url('@Url.Content(altraFoto)'),linear-gradient(160deg,#1a6f86,#0b2f3b)"></div>
+                        </a>
+                        <div class="bbody">
+                            <h3>@altra.Nome</h3>
+                            <p class="bmeta">@altra.Anno · @altra.Lunghezza</p>
+                            <p class="price">@altra.Prezzo</p>
+                            <a class="btn sea" asp-page="/BarcheUsate/Dettaglio" asp-route-slug="@altra.Slug">
+                                Scheda tecnica <span aria-hidden="true">→</span>
+                            </a>
+                        </div>
+                    </article>
+                }
+            </div>
+        </section>
+    }
+</div>
+
+@section Scripts {
+<script>
+(function () {
+  var main = document.getElementById("bmain");
+  var thumbs = document.querySelectorAll(".bthumbs button");
+  thumbs.forEach(function (t) {
+    t.addEventListener("click", function () {
+      main.style.backgroundImage = "url('" + t.dataset.src + "'),linear-gradient(160deg,#1a6f86,#0b2f3b)";
+      thumbs.forEach(function (o) { o.setAttribute("aria-current", o === t ? "true" : "false"); });
+    });
+  });
+})();
+</script>
+}
