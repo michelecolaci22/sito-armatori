@@ -15,9 +15,9 @@
     }).ToList();
     var servizi = new[]
     {
-        new { Numero = "01", Nome = "Charter privato", Teaser = "Una barca tutta per voi, una rotta da scegliere insieme e il tempo di vivere il mare senza fretta.", Foto = "~/img/servizi/charter.jpg", Dettaglio = "DA MEZZA GIORNATA A GIORNATA INTERA", Link = "/charter-yacht", LinkText = "Scopri il charter" },
-        new { Numero = "02", Nome = "Le grotte di Leuca", Teaser = "La costa vista dall’acqua, tra cavità marine, scogliere chiare e soste per un bagno.", Foto = "~/img/servizi/grotte.jpg", Dettaglio = "COSTA IONICA E ADRIATICA", Link = "/Prenota?tour=grotte", LinkText = "Esplora le grotte" },
-        new { Numero = "03", Nome = "Una giornata in Grecia", Teaser = "Attraversa lo Ionio verso Othonoi e Mathraki, per una giornata diversa dal solito.", Foto = "~/img/servizi/grecia.jpg", Dettaglio = "ISOLE DIAPONTIE · PARTENZA DA LEUCA", Link = "/tour-grecia", LinkText = "Scopri il tour" }
+        new { Nome = "Charter privato", Teaser = "Una barca tutta per voi, una rotta da scegliere insieme e il tempo di vivere il mare senza fretta.", Foto = "~/img/servizi/charter.jpg", Dettaglio = "DA MEZZA GIORNATA A GIORNATA INTERA", Link = "/charter-yacht", LinkText = "Scopri il charter" },
+        new { Nome = "Le grotte di Leuca", Teaser = "La costa vista dall’acqua, tra cavità marine, scogliere chiare e soste per un bagno.", Foto = "~/img/servizi/grotte.jpg", Dettaglio = "COSTA IONICA E ADRIATICA", Link = "/Prenota?tour=grotte", LinkText = "Esplora le grotte" },
+        new { Nome = "Una giornata in Grecia", Teaser = "Attraversa lo Ionio verso Othonoi e Mathraki, per una giornata diversa dal solito.", Foto = "~/img/servizi/grecia.jpg", Dettaglio = "ISOLE DIAPONTIE · PARTENZA DA LEUCA", Link = "/tour-grecia", LinkText = "Scopri il tour" }
     };
     var barche = Servizio.InVendita.Take(3).Select(b => new
     {
@@ -58,7 +58,7 @@
         <p class="hero-description">Rotte private, grotte e isole da scoprire. Si parte dal porto di Leuca, con chi questo mare lo vive ogni giorno.</p>
         <div class="hero-actions">
             <a class="btn btn-light" href="#esperienze">Esplora le esperienze <span aria-hidden="true">↘</span></a>
-            <a class="text-link text-link-light" asp-page="/Contatti">Parla con il nostro equipaggio <span aria-hidden="true">↗</span></a>
+            <a class="text-link text-link-light" asp-page="/Contatti">Parla con l’equipaggio <span aria-hidden="true">↗</span></a>
         </div>
     </div>
     <div class="hero-caption"><span>39°48′ N — 18°21′ E</span><span>Il punto più a sud della Puglia</span></div>
@@ -105,13 +105,13 @@
                     <p class="eyebrow">IL MARE, COME PIACE A TE</p>
                     <h2>Ogni rotta ha il suo ritmo.</h2>
                 </div>
+                <p class="section-description">Una barca tutta per voi, le grotte della costa o una giornata tra le isole greche: si parte da Leuca.</p>
             </div>
             <div class="experience-grid">
                 @foreach (var s in servizi)
                 {
                     <article class="experience-card">
                         <a class="experience-image" href="@s.Link" aria-label="@s.LinkText: @s.Nome" style="background-image:url('@Url.Content(s.Foto)')">
-                            <span class="experience-number">@s.Numero</span>
                         </a>
                         <div class="experience-copy">
                             <p class="eyebrow">@s.Dettaglio</p>
@@ -134,10 +134,11 @@
             <span class="image-note">LA FLOTTA, DA VICINO</span>
             @if (yachtSlides.Count > 1)
             {
-                <div class="story-carousel-controls" role="group" aria-label="Scorri le fotografie degli yacht">
-                    <button type="button" data-yacht-step="-1" aria-label="Yacht precedente">←</button>
-                    <span aria-live="polite"><span data-yacht-current>01</span> / @yachtSlides.Count.ToString("00")</span>
-                    <button type="button" data-yacht-step="1" aria-label="Yacht successivo">→</button>
+                <div class="story-carousel-dots" role="group" aria-label="Scegli una fotografia della flotta">
+                    @for (var i = 0; i < yachtSlides.Count; i++)
+                    {
+                        <button type="button" data-yacht-slide="@i" aria-label="Mostra @yachtSlides[i].Nome" aria-current="@(i == 0 ? "true" : "false")"></button>
+                    }
                 </div>
             }
         </div>
@@ -187,12 +188,13 @@
 
     <section class="home-gallery section-pad" aria-labelledby="gallery-title">
         <div class="wrap">
-            <div class="section-heading">
+            <div class="section-heading gallery-heading">
                 <div>
                     <p class="eyebrow">APPUNTI DI BORDO</p>
                     <h2 id="gallery-title">La vita, vista dal mare.</h2>
+                    <p class="section-description">Il nostro mare, scatto dopo scatto.</p>
                 </div>
-                <a class="text-link" href="@instagramUrl" target="_blank" rel="noopener">Seguici su Instagram <span aria-hidden="true">↗</span></a>
+                <a class="btn btn-outline gallery-cta" href="@instagramUrl" target="_blank" rel="noopener">Seguici su Instagram <span aria-hidden="true">↗</span></a>
             </div>
             <div class="photo-grid">
                 @foreach (var g in galleria)
@@ -217,17 +219,12 @@
                 <span class="score-caption">Su TripAdvisor</span>
             </div>
             <div class="review-carousel" aria-label="Recensioni TripAdvisor">
-                <div class="review-carousel-head">
-                    <p class="eyebrow">LE VOSTRE PAROLE</p>
-                    <div class="review-controls" role="group" aria-label="Scorri le recensioni">
-                        <button type="button" data-review-step="-1" aria-label="Recensione precedente">←</button>
-                        <button type="button" data-review-step="1" aria-label="Recensione successiva">→</button>
-                    </div>
-                </div>
-                <div class="review-track" tabindex="0" aria-label="Recensioni degli ospiti">
-                    @foreach (var r in recensioni)
+                <p class="eyebrow">RECENSIONI DEGLI OSPITI</p>
+                <div class="review-track" aria-live="polite" aria-atomic="true" aria-label="Recensioni degli ospiti">
+                    @for (var i = 0; i < recensioni.Count; i++)
                     {
-                        <article class="review-card">
+                        var r = recensioni[i];
+                        <article class="review-card @(i == 0 ? "is-active" : "")" aria-hidden="@(i == 0 ? "false" : "true")">
                             <span class="review-stars" aria-label="@r.Stelle stelle su 5">@(new string('★', r.Stelle))</span>
                             <p>“@r.Testo”</p>
                             <footer>@r.Autore <span>· @r.Data</span></footer>
@@ -268,8 +265,7 @@
   var container = document.querySelector(".story-image");
   if (!container) return;
   var slides = container.querySelectorAll(".story-slide");
-  var counter = container.querySelector("[data-yacht-current]");
-  var buttons = container.querySelectorAll("[data-yacht-step]");
+  var buttons = container.querySelectorAll("[data-yacht-slide]");
   if (slides.length < 2 || !buttons.length) return;
   var index = 0;
   var timer;
@@ -280,7 +276,7 @@
       slide.classList.toggle("is-active", i === index);
       slide.setAttribute("aria-hidden", i === index ? "false" : "true");
     });
-    if (counter) counter.textContent = String(index + 1).padStart(2, "0");
+    buttons.forEach(function (button, i) { button.setAttribute("aria-current", i === index ? "true" : "false"); });
   }
   function restart() {
     window.clearInterval(timer);
@@ -291,7 +287,7 @@
   }
   buttons.forEach(function (button) {
     button.addEventListener("click", function () {
-      show(index + Number(button.getAttribute("data-yacht-step")));
+      show(Number(button.getAttribute("data-yacht-slide")));
       restart();
     });
   });
@@ -299,14 +295,26 @@
 })();
 
 (function () {
-  var track = document.querySelector(".review-track");
-  if (!track) return;
-  document.querySelectorAll("[data-review-step]").forEach(function (button) {
-    button.addEventListener("click", function () {
-      var direction = Number(button.getAttribute("data-review-step"));
-      track.scrollBy({ left: direction * Math.min(track.clientWidth * .8, 440), behavior: "smooth" });
+  var slides = document.querySelectorAll(".review-card");
+  if (slides.length < 2) return;
+  var index = 0;
+  var timer;
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function show(next) {
+    index = (next + slides.length) % slides.length;
+    slides.forEach(function (slide, i) {
+      slide.classList.toggle("is-active", i === index);
+      slide.setAttribute("aria-hidden", i === index ? "false" : "true");
     });
-  });
+  }
+  function restart() {
+    window.clearInterval(timer);
+    if (reduceMotion) return;
+    timer = window.setInterval(function () {
+      if (document.visibilityState === "visible") show(index + 1);
+    }, 6000);
+  }
+  restart();
 })();
 </script>
 }
